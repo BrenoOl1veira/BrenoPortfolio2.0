@@ -23,7 +23,6 @@ const Hero = () => {
 
       {/* Renderiza o ComputersCanvas apenas se não estiver em um dispositivo móvel */}
       {!isMobile && <ComputersCanvas />}
-      )}
     </section>
   );
 };
