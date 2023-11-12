@@ -37,7 +37,7 @@ const About = () => {
 
 <div className='flex-auto flex flex-wrap' style={containerStyle}>
   <div className='w-full md:w-1/2' style={imageStyle}>
-    <img src="./src/assets/LOGO BRENO.png" alt="Minha Imagem" style={{ width: '100%', height: '100%' }} />
+    <img src="./src/assets/LOGOBRENO.png" alt="Minha Imagem" style={{ width: '100%', height: '100%' }} />
   </div>
   <div className='w-full md:w-1/2' style={textContainerStyle}>
     <motion.p

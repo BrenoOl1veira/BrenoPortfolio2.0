@@ -16,7 +16,7 @@ import jofege from "./company/jofege.png";
 
 import project1 from "./projeto/PROJETO1.jpg";
 import project2 from "./projeto/PROJETO2.jpg";
-import project3 from "./projeto/PROJETO3.jpg"
+import project3 from "./projeto/PROJETO3.jpg";
 
 
 export {
