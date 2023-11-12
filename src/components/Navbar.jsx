@@ -61,14 +61,14 @@ const Navbar = () => {
 
         <div className="list-none hidden sm:flex flex-row items-center">
           <a
-            href="https://www.linkedin.com/seu-link-do-linkedin"
+            href="https://www.linkedin.com/in/brenool1veira/"
             target="_blank"
             rel="noopener noreferrer"
           >
             <FiLinkedin className="text-white text-2xl mr-4" />
           </a>
           <a
-            href="https://www.github.com/seu-link-do-github"
+            href="https://github.com/BrenoOl1veira"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -113,7 +113,7 @@ const Navbar = () => {
                   <FiLinkedin className="text-white text-2xl" />
                 </a>
                 <a
-                  href="https://www.github.com/seu-link-do-github"
+                  href="https://github.com/BrenoOl1veira"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
