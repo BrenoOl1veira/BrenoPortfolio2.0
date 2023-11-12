@@ -23,12 +23,6 @@ const Hero = () => {
 
       {/* Renderiza o ComputersCanvas apenas se não estiver em um dispositivo móvel */}
       {!isMobile && <ComputersCanvas />}
-
-      {/* Renderiza o EarthCanvas apenas se estiver em um dispositivo móvel */}
-      {isMobile && (
-        <div className="absolute inset-0 top-[300px] text-center">
-          <EarthCanvas />
-        </div>
       )}
     </section>
   );
