@@ -5,6 +5,7 @@ import { About, Contact, Experience, Hero, Navbar, Tech, Works, StarsCanvas } fr
 
 const App = () => {
   const [starsCanvasLoaded, setStarsCanvasLoaded] = useState(false);
+  const [techLoaded, setTechLoaded] = useState(false);
 
   useEffect(() => {
     // Função que simula o carregamento do StarsCanvas
@@ -16,8 +17,18 @@ const App = () => {
       }, 2000); // Tempo de simulação de 2 segundos, ajuste conforme necessário
     };
 
-    // Chame a função de carregamento aqui
+    // Função que simula o carregamento do Tech
+    const loadTech = () => {
+      // Simulando um processo de carregamento com setTimeout
+      setTimeout(() => {
+        // Quando estiver pronto, chame setTechLoaded(true)
+        setTechLoaded(true);
+      }, 1500); // Tempo de simulação de 1,5 segundos, ajuste conforme necessário
+    };
+
+    // Chame as funções de carregamento aqui
     loadStarsCanvas();
+    loadTech();
   }, []); // O array vazio [] garante que este efeito é executado apenas uma vez, equivalente ao componentDidMount
 
   return (
@@ -31,7 +42,7 @@ const App = () => {
         <div className='relative z-0'>
           <Navbar />
           <About />
-          <Tech />
+          {techLoaded && <Tech />}
           <Experience />
           <Works />
         </div>
