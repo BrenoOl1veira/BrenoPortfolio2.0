@@ -26,7 +26,6 @@ const App = () => {
         <div className='bg-hero-pattern bg-cover bg-no-repeat bg-center relative z-0'>
           <Navbar />
           <Hero />
-          {starsCanvasLoaded && <StarsCanvas />}
         </div>
         <div className='relative z-0'>
           <Navbar />
