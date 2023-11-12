@@ -3,11 +3,19 @@ import React from "react";
 import { BallCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { technologies } from "../constants";
+import { styles } from "../styles"; // Adicionei esta importação para utilizar a variável styles
 
 const Tech = () => {
   return (
     <div className='text-center'>
-      <h1 className='text-2xl font-bold mb-4'>Habilidades</h1>
+      <p className={`${styles.sectionSubText} text-center`}>
+        Um pouco das minhas habilidades
+      </p>
+      <h2 className={`${styles.sectionHeadText} text-center`}>
+        Habilidades
+      </h2>
+      <br />
+      <br />
       <div className='flex flex-row flex-wrap justify-center gap-10'>
         {technologies.map((technology) => (
           <div className='w-28 h-28' key={technology.name}>
@@ -16,7 +24,7 @@ const Tech = () => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SectionWrapper(Tech, "");
+export default SectionWrapper(Tech, "tech");

@@ -66,11 +66,17 @@ const ProjectCard = ({
     </motion.div>
   );
 };
+
 const Works = () => {
   return (
     <>
       <motion.div variants={textVariant()}>
-        <h2 className={`${styles.sectionHeadText}`}>Projetos.</h2>
+        <p className={`${styles.sectionSubText} text-center`}>
+          Bem-vindo à sessão dedicada aos meus projetos!
+        </p>
+        <h2 className={`${styles.sectionHeadText} text-center`}>
+          Projetos.
+        </h2>
       </motion.div>
 
       <div className='w-full flex'>
@@ -78,7 +84,6 @@ const Works = () => {
           variants={fadeIn("", "", 0.1, 1)}
           className='mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]'
         >
-          Bem-vindo à sessão dedicada aos meus projetos!
         </motion.p>
       </div>
 
@@ -88,7 +93,7 @@ const Works = () => {
         ))}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default SectionWrapper(Works, "");
+export default SectionWrapper(Works, "works");
