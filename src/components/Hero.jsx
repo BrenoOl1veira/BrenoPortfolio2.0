@@ -1,8 +1,12 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
+import { useMediaQuery } from 'react-responsive';
 
 const Hero = () => {
+  // Use the useMediaQuery hook to check if the screen width is less than a certain value (e.g., 600px for mobile)
+  const isMobile = useMediaQuery({ maxWidth: 600 });
+
   return (
     <section className={`relative w-full h-screen mx-auto`}>
       <div className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5 text-center`}>
@@ -13,11 +17,12 @@ const Hero = () => {
           <p className={`${styles.heroSubText} mt-2 text-white-100 text-center text-xxs`}>
             Sou Analista de Sistemas<br className='sm:block hidden' />
           </p>
-          <div> <i class='bx bxl-linkedin-square'></i> <i class='bx bxl-github' ></i> </div>
+          <div> <i className='bx bxl-linkedin-square'></i> <i className='bx bxl-github' ></i> </div>
         </div>
       </div>
       <br />
-      <ComputersCanvas />
+      {/* Renderiza o ComputersCanvas apenas se não estiver em um dispositivo móvel */}
+      {!isMobile && <ComputersCanvas />}
     </section>
   );
 };

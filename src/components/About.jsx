@@ -5,6 +5,7 @@ import { styles } from '../styles';
 import { SectionWrapper } from '../hoc';
 import { fadeIn, textVariant } from '../utils/motion';
 
+
 const containerStyle = {
   display: 'flex',
   alignItems: 'center', // Centraliza verticalmente
