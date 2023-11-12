@@ -18,6 +18,10 @@ import project1 from "./projeto/PROJETO1.jpg";
 import project2 from "./projeto/PROJETO2.jpg";
 import project3 from "./projeto/PROJETO3.jpg";
 
+import logohero from "./LOGOBRENO.png";
+
+import curriculo from "./curriculo/curriculo.pdf";
+
 
 export {
   logo,
@@ -35,4 +39,6 @@ export {
   project1,
   project2,
   project3,
+  logohero,
+  curriculo,
 };

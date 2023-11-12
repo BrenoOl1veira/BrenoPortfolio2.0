@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { styles } from '../styles';
 import { SectionWrapper } from '../hoc';
 import { fadeIn, textVariant } from '../utils/motion';
+import { logohero } from '../assets';
+import { curriculo } from '../assets';
 
 
 const containerStyle = {
@@ -38,7 +40,7 @@ const About = () => {
 
 <div className='flex-auto flex flex-wrap' style={containerStyle}>
   <div className='w-full md:w-1/2' style={imageStyle}>
-    <img src="./src/assets/LOGOBRENO.png" alt="Minha Imagem" style={{ width: '100%', height: '100%' }} />
+    <img src={logohero} alt="Minha Imagem" style={{ width: '100%', height: '100%' }} />
   </div>
   <div className='w-full md:w-1/2' style={textContainerStyle}>
     <motion.p
@@ -48,7 +50,7 @@ const About = () => {
       Profissional com 2 anos de experiência na área de Tecnologia da Informação, atuando em Suporte Técnico, Infraestrutura e Sistemas. Atualmente, estou cursando Análise e Desenvolvimento de Sistemas, demonstrando meu compromisso com a constante busca por novos aprendizados e conhecimentos.
       <br />
       <div className="flex items-center justify-center mt-4">
-        <a href="./src/assets/curriculo/Curriculo Breno Juan De Oliveira Pinto.pdf" download>
+        <a href={curriculo} download>
           <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
             Currículo
             <svg className="ml-2" stroke="currentColor" fill="currentColor" stroke-width="0" version="1.1" viewBox="0 0 17 17" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
