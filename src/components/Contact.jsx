@@ -10,61 +10,18 @@ import { slideIn } from "../utils/motion";
 
 const Contact = () => {
   const formRef = useRef();
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    message: "",
-  });
+  const [loading, setLoading] = useState(false);
 
   const isMobile = useMediaQuery({ maxWidth: 600 });
 
-  const [loading, setLoading] = useState(false);
-
-  const handleChange = (e) => {
-    const { target } = e;
-    const { name, value } = target;
-
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
 
-    emailjs
-      .send(
-        'service_z5d8s7p',
-        'template_fsio9ha',
-        {
-          from_name: form.name,
-          to_name: "Breno Juan de Oliveira Pinto",
-          from_email: form.email,
-          to_email: "brenojuandeoliveirapinto@gmail.com",
-          message: form.message,
-        },
-        '5XFv-vDwEG-1-M6-Z'
-      )
-      .then(
-        () => {
-          setLoading(false);
-          alert("Obrigado. Entrarei em contato assim que possível.");
+    // Lógica de envio pode ser adicionada aqui se necessário
+    // ...
 
-          setForm({
-            name: "",
-            email: "",
-            message: "",
-          });
-        },
-        (error) => {
-          setLoading(false);
-          console.error(error);
-
-          alert("Ops, algo deu errado. Por favor, tente novamente.");
-        }
-      );
+    // Submit do formulário usando o FormSubmit
+    formRef.current.submit();
   };
 
   return (
@@ -80,14 +37,14 @@ const Contact = () => {
           ref={formRef}
           onSubmit={handleSubmit}
           className='mt-12 flex flex-col gap-8'
+          action="https://formsubmit.co/brenojuandeoliveirapinto@gmail.com"
+          method="POST"
         >
           <label className='flex flex-col'>
             <span className='text-white font-medium mb-4'>Seu Nome</span>
             <input
               type='text'
               name='name'
-              value={form.name}
-              onChange={handleChange}
               placeholder="Qual é o seu nome?"
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
             />
@@ -97,8 +54,6 @@ const Contact = () => {
             <input
               type='email'
               name='email'
-              value={form.email}
-              onChange={handleChange}
               placeholder="Qual é o seu endereço de e-mail?"
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
             />
@@ -108,8 +63,6 @@ const Contact = () => {
             <textarea
               rows={7}
               name='message'
-              value={form.message}
-              onChange={handleChange}
               placeholder='O que você quer dizer?'
               className='bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium'
             />

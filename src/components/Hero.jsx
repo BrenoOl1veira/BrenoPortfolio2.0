@@ -2,9 +2,9 @@ import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { ComputersCanvas } from "./canvas";
 import { useMediaQuery } from 'react-responsive';
+import { EarthCanvas } from "./canvas";
 
 const Hero = () => {
-  // Use the useMediaQuery hook to check if the screen width is less than a certain value (e.g., 600px for mobile)
   const isMobile = useMediaQuery({ maxWidth: 600 });
 
   return (
@@ -20,9 +20,16 @@ const Hero = () => {
           <div> <i className='bx bxl-linkedin-square'></i> <i className='bx bxl-github' ></i> </div>
         </div>
       </div>
-      <br />
+
       {/* Renderiza o ComputersCanvas apenas se não estiver em um dispositivo móvel */}
       {!isMobile && <ComputersCanvas />}
+
+      {/* Renderiza o EarthCanvas apenas se estiver em um dispositivo móvel */}
+      {isMobile && (
+        <div className="absolute inset-0 top-[300px] text-center">
+          <EarthCanvas />
+        </div>
+      )}
     </section>
   );
 };
