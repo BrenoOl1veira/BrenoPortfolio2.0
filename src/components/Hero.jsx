@@ -1,11 +1,6 @@
-import { motion } from "framer-motion";
 import { styles } from "../styles";
-import { ComputersCanvas } from "./canvas";
-import { useMediaQuery } from 'react-responsive';
-import { EarthCanvas } from "./canvas";
 
 const Hero = () => {
-  const isMobile = useMediaQuery({ maxWidth: 600 });
 
   return (
     <section className={`relative w-full h-screen mx-auto`}>
@@ -21,8 +16,6 @@ const Hero = () => {
         </div>
       </div>
 
-      {/* Renderiza o ComputersCanvas apenas se não estiver em um dispositivo móvel */}
-      {!isMobile && <ComputersCanvas />}
     </section>
   );
 };
