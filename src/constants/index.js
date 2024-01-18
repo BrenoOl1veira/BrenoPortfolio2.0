@@ -166,6 +166,22 @@ const projects = [
     image: project3,
     source_code_link: "https://github.com/BrenoOl1veira/BrenoPortfolio",
   },
+  {
+    name: "API de ordens de serviços",
+    description: "API desenvolvida para ser consumida para o front-end.",
+    tags: [
+      {
+        name: "C#",
+        color: "pink-text-gradient",
+      },
+      {
+        name: ".NET",
+        color: "pink-text-gradient",
+      },
+    ],
+    image: project3,
+    source_code_link: "https://github.com/BrenoOl1veira/CRUD-API-",
+  },
 ];
 
 export { technologies, experiences, projects };
