@@ -60,7 +60,7 @@ const technologies = [
 
 const experiences = [
   {
-    title: "Assistente de TI",
+    title: "Analista de Sistemas",
     company_name: "JOFEGE",
     icon: jofege,
     iconBg: "#FFFFFF",
