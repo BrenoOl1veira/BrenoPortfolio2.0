@@ -75,6 +75,8 @@ const experiences = [
       "Implantações no Sistema TOTVS RM: Realização de implantações e integrações no sistema TOTVS.",
       "Desenvolvimento TOTVS RM Avançado: Desenvolvimento de fórmulas e implementações. Desenvolvimento de metadados.",
       "Stored Procedures e Transact-SQL: Criação de stored procedures para lógica clara. Experiência sólida em Transact-SQL.",
+      "Desenvolvimento de Relatórios com Power BI: Criação de relatórios e painéis personalizados usando Power BI.",
+      "Versionamento de Dashboards POWER BI no GitHub: Versionamento de relatórios através do GitHub por método de esteira de produção, sendo realizado o ambiente de desenvolvimento e produção.",
     ],
   },
   {
