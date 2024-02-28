@@ -10,6 +10,7 @@ import javascript from "./tech/javascript.png";
 import reactjs from "./tech/reactjs.png";
 import python from "./tech/python.png";
 import sharp from "./tech/c-sharp.png";
+import sql from "./tech/sql-server.png";
 
 import jofege from "./company/jofege.png";
 
