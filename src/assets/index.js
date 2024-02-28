@@ -37,6 +37,7 @@ export {
   jofege,
   python,
   sharp,
+  sql,
   project1,
   project2,
   project3,
