@@ -6,6 +6,7 @@ import {
   git,
   jofege,
   sharp,
+  sql,
   python,
   project1,
   project2,
@@ -55,6 +56,10 @@ const technologies = [
   {
     name: "Python",
     icon: python,
+  },
+  {
+    name: "SQL",
+    icon: sql,
   },
 ];
 
