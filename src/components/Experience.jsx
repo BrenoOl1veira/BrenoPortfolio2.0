@@ -1,52 +1,66 @@
 import React from "react";
-import {
-  VerticalTimeline,
-  VerticalTimelineElement,
-} from "react-vertical-timeline-component";
+// Importa o timeline vertical e seus elementos do pacote
+import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
+// Importa animações do Framer Motion
 import { motion } from "framer-motion";
 
+// Importa estilos globais, dados de experiência, HOC de seção e animações
 import { styles } from "../styles";
 import { experiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
 
+// Importa estilos CSS do timeline vertical
 import "react-vertical-timeline-component/style.min.css";
 
+/**
+ * Componente ExperienceCard
+ * Renderiza cada experiência individual dentro do VerticalTimeline
+ */
 const ExperienceCard = ({ experience }) => {
   return (
     <VerticalTimelineElement
+      // Estilos do conteúdo da timeline
       contentStyle={{
-        background: "#1d1836",
-        color: "#fff",
+        background: "#1d1836", // Fundo escuro
+        color: "#fff",          // Texto branco
       }}
-      contentArrowStyle={{ borderRight: "7px solid  #232631" }}
+      // Estilo da seta do conteúdo
+      contentArrowStyle={{ borderRight: "7px solid #232631" }}
+      // Data da experiência
       date={experience.date}
+      // Estilo do ícone
       iconStyle={{ background: experience.iconBg }}
+      // Ícone personalizado dentro do círculo
       icon={
-        <div className='flex justify-center items-center w-full h-full'>
+        <div className="flex justify-center items-center w-full h-full">
           <img
-            src={experience.icon}
-            alt={experience.company_name}
-            className='w-[60%] h-[60%] object-contain'
+            src={experience.icon}                     // Imagem do ícone
+            alt={experience.company_name}             // Acessibilidade
+            className="w-[60%] h-[60%] object-contain"
           />
         </div>
       }
     >
+      {/* Conteúdo do card */}
       <div>
-        <h3 className='text-white text-[24px] font-bold'>{experience.title}</h3>
+        {/* Título da posição ou cargo */}
+        <h3 className="text-white text-[24px] font-bold">{experience.title}</h3>
+        {/* Nome da empresa */}
         <p
-          className='text-secondary text-[16px] font-semibold'
+          className="text-secondary text-[16px] font-semibold"
           style={{ margin: 0 }}
         >
           {experience.company_name}
         </p>
       </div>
 
-      <ul className='mt-5 list-disc ml-5 space-y-2'>
+      {/* Lista de responsabilidades ou conquistas */}
+      <ul className="mt-5 list-disc ml-5 space-y-2">
         {experience.points.map((point, index) => (
           <li
             key={`experience-point-${index}`}
-            className='text-white-100 text-[14px] pl-1 tracking-wider'
+            className="text-white-100 text-[14px] pl-1 tracking-wider"
           >
             {point}
           </li>
@@ -56,9 +70,14 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
+/**
+ * Componente Experience
+ * Renderiza toda a seção de experiências profissionais
+ */
 const Experience = () => {
   return (
     <>
+      {/* Cabeçalho da seção com animação */}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
           O que já fiz até agora
@@ -67,12 +86,15 @@ const Experience = () => {
           Experiência Profissional.
         </h2>
       </motion.div>
-      <div className='mt-20 flex flex-col'>
+
+      {/* Timeline vertical */}
+      <div className="mt-20 flex flex-col">
         <VerticalTimeline>
+          {/* Itera sobre o array de experiências e cria um card para cada */}
           {experiences.map((experience, index) => (
             <ExperienceCard
-              key={`experience-${index}`}
-              experience={experience}
+              key={`experience-${index}`} // Key única para React
+              experience={experience}      // Passa os dados da experiência
             />
           ))}
         </VerticalTimeline>
@@ -81,4 +103,5 @@ const Experience = () => {
   );
 };
 
+// Exporta o componente com o HOC SectionWrapper para layout e animações da seção
 export default SectionWrapper(Experience, "work");
