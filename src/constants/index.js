@@ -1,6 +1,6 @@
 import {
   javascript,
-  // html,
+  html,
   css,
   reactjs,
   git,
@@ -44,7 +44,6 @@ export const navLinks = [
  * - icon: caminho para o ícone da tecnologia (SVG ou imagem)
  */
 const technologies = [
-  // { name: "HTML 5", icon: html },
   { name: "CSS 3", icon: css },
   { name: "JavaScript", icon: javascript },
   { name: "React JS", icon: reactjs },
@@ -52,6 +51,7 @@ const technologies = [
   { name: "C#", icon: sharp },
   { name: "Python", icon: python },
   { name: "SQL", icon: sql },
+  { name: "HTML 5", icon: html },
 ];
 
 /**
