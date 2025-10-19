@@ -1,17 +1,16 @@
-import React, { Suspense, useMemo } from "react";
+import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Decal, Float, Preload, useTexture } from "@react-three/drei";
 import CanvasLoader from "../Loader";
 
 const Ball = ({ imgUrl }) => {
-  const decal = useTexture(imgUrl); // useTexture já faz cache interno
+  const [decal] = useTexture([imgUrl]); // correto: retorna array, funciona com Suspense
 
   return (
-    <Float speed={1.25} rotationIntensity={0.4} floatIntensity={0.5}>
+    <Float speed={1.0} rotationIntensity={0.3} floatIntensity={0.5}>
       <ambientLight intensity={0.5} />
-      <directionalLight position={[0, 0, 0.1]} intensity={1} />
+      <directionalLight position={[0, 0, 0.1]} intensity={0.8} />
       <mesh castShadow receiveShadow scale={2}>
-        {/* Geometria simplificada */}
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial
           color="#f0f0f0"
@@ -19,7 +18,13 @@ const Ball = ({ imgUrl }) => {
           polygonOffsetFactor={-5}
           flatShading
         />
-        <Decal position={[0, 0, 1]} rotation={[0, 0, 0]} scale={1} map={decal} flatShading />
+        <Decal
+          position={[0, 0, 1]}
+          rotation={[0, 0, 0]}
+          scale={0.9}
+          map={decal}
+          flatShading
+        />
       </mesh>
     </Float>
   );
@@ -29,9 +34,9 @@ const BallCanvas = ({ icon }) => {
   return (
     <div className="w-full h-full">
       <Canvas
-        frameloop="demand" // renderiza apenas quando necessário
+        frameloop="always" // renderiza sempre para garantir visibilidade
         dpr={[1, 1.5]}
-        gl={{ antialias: true }} // remove preserveDrawingBuffer
+        gl={{ antialias: true }}
         onCreated={({ gl }) => {
           gl.domElement.style.pointerEvents = "none";
           gl.domElement.style.touchAction = "pan-y";
