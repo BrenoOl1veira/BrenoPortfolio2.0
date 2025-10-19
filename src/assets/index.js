@@ -5,7 +5,7 @@ import close from "./close.svg";
 
 import css from "./tech/css.svg";
 import git from "./tech/git.png";
-import html from "./tech/html.svg";
+// import html from "./tech/html.svg";
 import javascript from "./tech/javascript.png";
 import reactjs from "./tech/reactjs.png";
 import python from "./tech/python.png";
@@ -31,7 +31,7 @@ export {
   close,
   css,
   git,
-  html,
+  // html,
   javascript,
   reactjs,
   jofege,
