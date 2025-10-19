@@ -10,24 +10,29 @@ import { fadeIn, textVariant } from "../utils/motion";
 
 /**
  * ProjectCard
- *
+ * ----------------------------------------
  * Componente que renderiza um card de projeto padronizado.
- * - A estrutura usa flex column para garantir que todos os cards fiquem com altura consistente.
- * - A área da imagem tem altura fixa (h-[230px]) para alinhar todas as thumbnails.
- * - O footer (tags) e a descrição usam espaçamento consistente.
- *
+ * - Layout em coluna (flex-col) para garantir altura consistente entre os cards.
+ * - Área da imagem tem altura fixa (h-[230px]) para alinhar todas as thumbnails.
+ * - Footer com tags e descrição tem espaçamento consistente.
+ * 
  * Props:
- *  - index: número do item (usado na animação)
+ *  - index: número do item (utilizado para delay na animação)
  *  - name, description, tags, image, source_code_link: dados do projeto
  */
 const ProjectCard = ({ index, name, description, tags, image, source_code_link }) => {
   return (
     // motion.div controla a animação de entrada (fadeIn para cima)
     <motion.div variants={fadeIn("up", "spring", index * 0.35, 0.75)}>
-      {/* 
-        Tilt cria um leve efeito 3D ao passar o mouse.
-        - Usamos props (tiltMaxAngleX/Y, scale, transitionSpeed) para compatibilidade.
-        - Classe base padronizada: largura fixa em telas maiores e largura total em telas pequenas.
+      
+      {/*
+        Tilt cria efeito 3D ao passar o mouse.
+        - tiltMaxAngleX/Y: define o ângulo máximo de inclinação
+        - perspective: profundidade do efeito 3D
+        - scale: leve aumento no hover
+        - transitionSpeed: velocidade da transição
+        - gyroscope: permite movimento em dispositivos móveis
+        - classes Tailwind: w-full para mobile, sm:w-[360px] largura fixa no desktop, bg-tertiary e p-5 para estilo do card
       */}
       <Tilt
         tiltMaxAngleX={12}
@@ -38,8 +43,9 @@ const ProjectCard = ({ index, name, description, tags, image, source_code_link }
         gyroscope={true}
         className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full"
       >
-        {/* Container do card com layout em coluna (garante consistência) */}
+        {/* Container do card em coluna */}
         <div className="flex flex-col h-full">
+          
           {/* ==================== ÁREA DA IMAGEM ==================== */}
           <div className="relative w-full h-[230px] rounded-2xl overflow-hidden">
             {/* Imagem do projeto */}
@@ -49,13 +55,16 @@ const ProjectCard = ({ index, name, description, tags, image, source_code_link }
               className="w-full h-full object-cover"
             />
 
-            {/* Botão flutuante no canto superior direito para abrir o código-fonte */}
+            {/*
+              Botão flutuante no canto superior direito para abrir o código-fonte
+              - pointer-events-none no overlay garante que apenas o botão seja clicável
+              - pointer-events-auto no botão habilita clique
+            */}
             <div className="absolute inset-0 pointer-events-none">
-              {/* pointer-events-none no overlay permite que apenas o botão receba clique */}
               <div className="absolute top-3 right-3 pointer-events-auto">
                 <button
                   onClick={() => window.open(source_code_link, "_blank", "noopener,noreferrer")}
-                  aria-label={`Abrir código do projeto ${name} no GitHub`}
+                  aria-label={`Open ${name} project source code on GitHub`}
                   className="bg-black/60 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur-sm hover:scale-105 transition-transform"
                 >
                   <img src={github} alt="github icon" className="w-5 h-5 object-contain" />
@@ -65,13 +74,16 @@ const ProjectCard = ({ index, name, description, tags, image, source_code_link }
           </div>
 
           {/* ==================== CONTEÚDO (TÍTULO + DESCRIÇÃO) ==================== */}
-          {/* flex-1 faz com que a área de descrição cresça e mantenha os cards alinhados verticalmente */}
+          {/* flex-1 garante que a área de descrição cresça e cards fiquem alinhados verticalmente */}
           <div className="mt-5 flex-1 flex flex-col">
+            {/* Título do projeto */}
             <h3 className="text-white font-bold text-[20px] sm:text-[24px]">{name}</h3>
 
-            {/* 
-              Para manter os cards padronizados, limitamos a área de descrição com min-height.
-              Isso evita que cards com poucas linhas fiquem visualmente menores que outros.
+            {/*
+              Descrição do projeto
+              - mt-2: espaçamento do título
+              - text-secondary: cor mais discreta
+              - min-h-[56px]: altura mínima para manter consistência entre cards
             */}
             <p className="mt-2 text-secondary text-[14px] leading-relaxed min-h-[56px]">
               {description}
@@ -97,9 +109,10 @@ const ProjectCard = ({ index, name, description, tags, image, source_code_link }
 
 /**
  * Works
- *
- * Seção que lista os projetos. Uso do SectionWrapper para animação e espaçamento global.
- * O container dos cards usa flex-wrap para responsividade; em telas grandes cada card tem largura fixa.
+ * ----------------------------------------
+ * Seção que lista os projetos do desenvolvedor.
+ * - SectionWrapper adiciona padding, margens e animação padrão de seção.
+ * - Container dos cards usa flex-wrap para responsividade; em telas grandes cada card tem largura fixa.
  */
 const Works = () => {
   return (
@@ -107,25 +120,25 @@ const Works = () => {
       {/* Título da seção com animação */}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
-          Bem-vindo à sessão dedicada aos meus projetos!
+          Welcome to my projects showcase!
         </p>
-        <h2 className={`${styles.sectionHeadText} text-center`}>Projetos.</h2>
+        <h2 className={`${styles.sectionHeadText} text-center`}>Projects.</h2>
       </motion.div>
 
       {/* Texto introdutório (opcional) */}
       <div className="w-full flex">
         <motion.p
           variants={fadeIn("", "", 0.1, 1)}
-          className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px]"
+          className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px] text-center"
         >
-          {/* Aqui você pode colocar uma descrição curta da seção, se desejar */}
+          {/* Optional short description about the projects */}
         </motion.p>
       </div>
 
       {/* Grid/Wrap dos cards */}
       <div className="mt-20 flex flex-wrap gap-7 justify-center">
         {projects.map((project, index) => (
-          // Cada ProjectCard recebe index (para controlar o delay da animação) e os dados
+          // Cada ProjectCard recebe index (para controlar delay da animação) e os dados
           <ProjectCard key={`project-${index}`} index={index} {...project} />
         ))}
       </div>

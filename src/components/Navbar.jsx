@@ -5,26 +5,36 @@ import { styles } from "../styles";
 import { navLinks } from "../constants";
 import { logo, menu, close } from "../assets";
 
+/**
+ * Componente Navbar
+ * ----------------------------------------
+ * Navbar fixa no topo da página com:
+ * - Destaque do link ativo
+ * - Menu responsivo (desktop e mobile)
+ * - Ícones de redes sociais
+ * - Fundo que muda ao rolar a página
+ */
 const Navbar = () => {
-  // Estado que guarda qual link está ativo (para destacar no menu)
+  // Guarda qual link está ativo para destacar no menu
   const [active, setActive] = useState("");
 
-  // Estado que controla se o menu mobile está aberto (true) ou fechado (false)
+  // Controla se o menu mobile está aberto (true) ou fechado (false)
   const [toggle, setToggle] = useState(false);
 
-  // Estado para alterar o fundo da navbar ao rolar a página
+  // Controla se a navbar deve ter fundo ao rolar a página
   const [scrolled, setScrolled] = useState(false);
 
-  // Efeito que detecta o scroll e muda o estilo da navbar
+  /**
+   * useEffect para monitorar scroll
+   * - Se o usuário rolar mais de 20px, ativa o fundo
+   * - Remove o listener ao desmontar o componente
+   */
   useEffect(() => {
     const handleScroll = () => {
-      // Se o usuário rolar para baixo mais de 20px, muda o estado
       setScrolled(window.scrollY > 20);
     };
-
     window.addEventListener("scroll", handleScroll);
 
-    // Limpa o event listener ao desmontar o componente
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -32,19 +42,20 @@ const Navbar = () => {
     <nav
       className={`${styles.paddingX} w-full flex items-center py-5 fixed top-0 z-20 transition-colors duration-300`}
       style={{
-        // Fundo translúcido que muda ao rolar a página
+        // Fundo translúcido que muda ao rolar
         backgroundColor: scrolled ? "rgba(0, 0, 25, 0.85)" : "transparent",
-        backdropFilter: "blur(10px)", // efeito de vidro fosco moderno
+        backdropFilter: "blur(10px)", // efeito glassmorphism
       }}
     >
       <div className="w-full flex justify-between items-center max-w-7xl mx-auto">
-        {/* Logo e nome — redireciona para o topo da página */}
+        
+        {/* ==================== LOGO ==================== */}
         <Link
           to="/"
           className="flex items-center gap-2"
           onClick={() => {
-            setActive("");
-            window.scrollTo(0, 0);
+            setActive("");          // Reseta link ativo ao clicar no logo
+            window.scrollTo(0, 0);  // Scroll para o topo
           }}
         >
           <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
@@ -53,7 +64,7 @@ const Navbar = () => {
           </p>
         </Link>
 
-        {/* ======================== MENU DESKTOP ======================== */}
+        {/* ==================== MENU DESKTOP ==================== */}
         <ul className="list-none hidden md:flex flex-row gap-8">
           {navLinks.map((nav) => (
             <li
@@ -68,7 +79,7 @@ const Navbar = () => {
           ))}
         </ul>
 
-        {/* ÍCONES DE REDES SOCIAIS (visíveis apenas no desktop) */}
+        {/* ==================== ÍCONES DE REDES SOCIAIS (DESKTOP) ==================== */}
         <div className="hidden sm:flex flex-row items-center gap-4">
           <a
             href="https://www.linkedin.com/in/brenool1veira/"
@@ -88,9 +99,9 @@ const Navbar = () => {
           </a>
         </div>
 
-        {/* ======================== MENU MOBILE ======================== */}
+        {/* ==================== MENU MOBILE ==================== */}
         <div className="md:hidden flex flex-1 justify-end items-center">
-          {/* Ícone de abrir/fechar menu */}
+          {/* Ícone para abrir/fechar o menu */}
           <img
             src={toggle ? close : menu}
             alt="menu"
@@ -104,7 +115,6 @@ const Navbar = () => {
               toggle ? "flex" : "hidden"
             } p-6 black-gradient absolute top-20 right-4 min-w-[160px] z-10 rounded-xl flex-col gap-4 shadow-lg`}
           >
-            {/* Links de navegação */}
             <ul className="list-none flex flex-col gap-4">
               {navLinks.map((nav) => (
                 <li
@@ -114,14 +124,14 @@ const Navbar = () => {
                   } hover:text-white cursor-pointer`}
                   onClick={() => {
                     setActive(nav.title);
-                    setToggle(false); // Fecha o menu ao clicar em um link
+                    setToggle(false); // Fecha menu ao clicar
                   }}
                 >
                   <a href={`#${nav.id}`}>{nav.title}</a>
                 </li>
               ))}
 
-              {/* Ícones de redes sociais dentro do menu mobile */}
+              {/* Ícones de redes sociais no menu mobile */}
               <div className="flex flex-row gap-4 pt-2 border-t border-gray-600 mt-2">
                 <a
                   href="https://www.linkedin.com/in/brenool1veira/"
@@ -143,6 +153,7 @@ const Navbar = () => {
             </ul>
           </div>
         </div>
+
       </div>
     </nav>
   );

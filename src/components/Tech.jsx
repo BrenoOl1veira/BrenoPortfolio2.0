@@ -8,33 +8,35 @@ import { styles } from "../styles";
  * Componente: Tech
  * ----------------------------------------
  * Esta seção exibe as tecnologias/habilidades do desenvolvedor em formato de "bolas" 3D.
- * Cada ícone é renderizado pelo componente BallCanvas, que usa Three.js para o efeito dinâmico.
+ * Cada ícone é renderizado pelo componente BallCanvas, que utiliza Three.js para criar o efeito dinâmico de rotação.
  * A lista de tecnologias é carregada a partir do arquivo constants/index.js.
  */
 const Tech = () => {
   return (
     // Container principal da seção
     <section className="w-full text-center">
+      
       {/* ====== TÍTULOS ====== */}
       <div className="mb-10">
         {/* Subtítulo da seção */}
         <p className={`${styles.sectionSubText} text-center`}>
-          Um pouco das minhas habilidades
+          A little about my skills
         </p>
 
         {/* Título principal */}
         <h2 className={`${styles.sectionHeadText} text-center`}>
-          Habilidades
+          Skills
         </h2>
       </div>
 
       {/* ====== LISTA DE TECNOLOGIAS ====== */}
       {/**
        * Flex container que organiza os ícones de forma responsiva:
-       * - `flex-wrap`: permite quebrar linha se houver muitas tecnologias.
-       * - `justify-center`: centraliza o conteúdo horizontalmente.
-       * - `gap-10`: espaçamento uniforme entre os itens.
-       * - `max-w-5xl mx-auto`: limita a largura máxima para evitar que os ícones se espalhem demais.
+       * - flex-row: organiza os itens em linha
+       * - flex-wrap: permite quebrar linha se houver muitas tecnologias
+       * - justify-center: centraliza horizontalmente os itens
+       * - gap-10: define espaçamento uniforme entre cada item
+       * - max-w-5xl mx-auto: limita a largura máxima do container para evitar que os ícones se espalhem demais
        */}
       <div className="flex flex-row flex-wrap justify-center gap-10 max-w-5xl mx-auto">
         {technologies.map((technology) => (
@@ -43,20 +45,23 @@ const Tech = () => {
             className="flex flex-col items-center justify-center w-28 h-28"
           >
             {/* 
-              BallCanvas: componente 3D com animação de rotação.
-              Props:
-              - icon: caminho da imagem (ícone da tecnologia)
+              BallCanvas:
+              - Componente 3D que renderiza o ícone da tecnologia com animação de rotação.
+              - Props:
+                - icon: caminho da imagem (ícone da tecnologia)
             */}
             <BallCanvas icon={technology.icon} />
 
             {/* 
-              Nome da tecnologia (visível embaixo do ícone)
-              - `text-sm text-white/80` para aparência discreta.
-              - `mt-2` cria espaçamento entre o ícone e o texto.
+              Nome da tecnologia (visível abaixo do ícone)
+              - text-sm text-white/80: define tamanho menor e cor levemente transparente
+              - mt-2: cria espaçamento entre o ícone e o texto
+              - font-medium tracking-wide: melhora legibilidade e estética
+              - aria-label: acessibilidade, descrevendo a tecnologia
             */}
             <p
               className="text-sm text-white/80 mt-2 font-medium tracking-wide"
-              aria-label={`Tecnologia: ${technology.name}`}
+              aria-label={`Technology: ${technology.name}`}
             >
               {technology.name}
             </p>

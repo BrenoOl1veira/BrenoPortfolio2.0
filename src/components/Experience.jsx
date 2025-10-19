@@ -15,7 +15,10 @@ import "react-vertical-timeline-component/style.min.css";
 
 /**
  * Componente ExperienceCard
+ * ----------------------------------------
  * Renderiza cada experiência individual dentro do VerticalTimeline
+ * - Recebe como prop o objeto `experience`
+ * - Utiliza VerticalTimelineElement para cada item da timeline
  */
 const ExperienceCard = ({ experience }) => {
   return (
@@ -35,7 +38,7 @@ const ExperienceCard = ({ experience }) => {
       icon={
         <div className="flex justify-center items-center w-full h-full">
           <img
-            src={experience.icon}                     // Imagem do ícone
+            src={experience.icon}                     // Caminho do ícone
             alt={experience.company_name}             // Acessibilidade
             className="w-[60%] h-[60%] object-contain"
           />
@@ -59,10 +62,10 @@ const ExperienceCard = ({ experience }) => {
       <ul className="mt-5 list-disc ml-5 space-y-2">
         {experience.points.map((point, index) => (
           <li
-            key={`experience-point-${index}`}
+            key={`experience-point-${index}`}      // Key única para cada item
             className="text-white-100 text-[14px] pl-1 tracking-wider"
           >
-            {point}
+            {point}                                  // Texto visível (em inglês)
           </li>
         ))}
       </ul>
@@ -72,7 +75,11 @@ const ExperienceCard = ({ experience }) => {
 
 /**
  * Componente Experience
+ * ----------------------------------------
  * Renderiza toda a seção de experiências profissionais
+ * - Usa SectionWrapper para layout, espaçamento e animações padrão de seção
+ * - Inclui animação do cabeçalho via Framer Motion
+ * - Itera sobre o array `experiences` para criar ExperienceCard para cada item
  */
 const Experience = () => {
   return (
@@ -80,10 +87,10 @@ const Experience = () => {
       {/* Cabeçalho da seção com animação */}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
-          O que já fiz até agora
+          What I have done so far
         </p>
         <h2 className={`${styles.sectionHeadText} text-center`}>
-          Experiência Profissional.
+          Professional Experience
         </h2>
       </motion.div>
 
