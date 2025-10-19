@@ -38,7 +38,7 @@ COMPONENTE: Astronaut
 ------------------------------------------------------- */
 const Astronaut = () => {
   const group = useRef();
-  const { scene, animations } = useGLTF("/astronaut2/scene.gltf");
+  const { scene, animations } = useGLTF("/astronaut/scene.gltf");
   const { actions, mixer } = useAnimations(animations, group);
 
   /* Ajuste avançado de materiais com foco no capacete */

@@ -3,9 +3,9 @@ import github from "./github.png";
 import menu from "./menu.svg";
 import close from "./close.svg";
 
-import css from "./tech/css copy.png";
+import css from "./tech/css.svg";
 import git from "./tech/git.png";
-import html from "./tech/html copy.png";
+import html from "./tech/html.svg";
 import javascript from "./tech/javascript.png";
 import reactjs from "./tech/reactjs.png";
 import python from "./tech/python.png";
