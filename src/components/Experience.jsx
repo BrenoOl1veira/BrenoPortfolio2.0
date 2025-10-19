@@ -65,7 +65,7 @@ const ExperienceCard = ({ experience }) => {
             key={`experience-point-${index}`}      // Key única para cada item
             className="text-white-100 text-[14px] pl-1 tracking-wider"
           >
-            {point}                                  // Texto visível (em inglês)
+          {point}
           </li>
         ))}
       </ul>
