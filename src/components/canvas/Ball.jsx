@@ -3,6 +3,46 @@ import { Canvas } from "@react-three/fiber";
 import { Decal, Float, Preload, useTexture } from "@react-three/drei";
 import CanvasLoader from "../Loader";
 
+const BallCanvas = ({ icon }) => {
+  // Detecta se é mobile
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+
+  // Se for mobile, mostra apenas a imagem PNG
+  if (isMobile) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <img 
+          src={icon} 
+          alt="Skill icon" 
+          className="max-w-full max-h-full object-contain"
+          style={{ width: '80px', height: '80px' }}
+        />
+      </div>
+    );
+  }
+
+  // Se for desktop, mostra o componente 3D original
+  return (
+    <div className="w-full h-full">
+      <Canvas
+        frameloop="always"
+        dpr={[1, 1.5]}
+        gl={{ preserveDrawingBuffer: true }}
+        onCreated={({ gl }) => {
+          gl.domElement.style.pointerEvents = "none";
+          gl.domElement.style.touchAction = "pan-y";
+        }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <Ball imgUrl={icon} />
+        </Suspense>
+        <Preload all />
+      </Canvas>
+    </div>
+  );
+};
+
+// Componente Ball original (precisa ser movido para fora ou mantido no mesmo arquivo)
 const Ball = ({ imgUrl }) => {
   const [decal] = useTexture([imgUrl]);
 
@@ -27,32 +67,6 @@ const Ball = ({ imgUrl }) => {
         />
       </mesh>
     </Float>
-  );
-};
-
-const BallCanvas = ({ icon }) => {
-  return (
-    <div className="w-full h-full">
-      <Canvas
-        frameloop="always"
-        dpr={[1, 1.5]}
-        gl={{ preserveDrawingBuffer: true }}
-        // onCreated permite acessar o contexto GL e o elemento canvas
-        onCreated={({ gl }) => {
-          // remove captura de ponteiro pelo canvas — nenhum clique/arrasto será recebido
-          gl.domElement.style.pointerEvents = "none";
-          // permite rolagem vertical nativa no mobile quando o dedo estiver sobre o canvas
-          gl.domElement.style.touchAction = "pan-y";
-        }}
-      >
-        <Suspense fallback={<CanvasLoader />}>
-          {/* Como desabilitamos a interação do canvas, OrbitControls não é necessário.
-              Se quiser manter apenas zoom/rotate por mouse em desktop, remova pointerEvents none e reative controls. */}
-          <Ball imgUrl={icon} />
-        </Suspense>
-        <Preload all />
-      </Canvas>
-    </div>
   );
 };
 
