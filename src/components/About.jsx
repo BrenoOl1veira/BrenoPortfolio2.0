@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { fadeIn, textVariant } from "../utils/motion";
-import { logohero, curriculo } from "../assets";
+import { logohero } from "../assets";
 import { useLanguage } from "../i18n/LanguageProvider";
+import { buildResumePdfUrl } from "../utils/resumeDownload";
 
 const containerStyle = {
   display: "flex",
@@ -31,6 +32,20 @@ const textContainerStyle = {
 
 const About = () => {
   const { t } = useLanguage();
+  const [loadingLocale, setLoadingLocale] = useState("");
+
+  const handleResumeDownload = async (locale) => {
+    try {
+      setLoadingLocale(locale);
+      const resumeUrl = await buildResumePdfUrl(locale);
+      window.open(resumeUrl, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      console.error(error);
+      alert(t.about.resumeError);
+    } finally {
+      setLoadingLocale("");
+    }
+  };
 
   return (
     <>
@@ -63,26 +78,33 @@ const About = () => {
             {t.about.body}
           </motion.p>
 
-          <div className="flex items-center justify-center mt-4">
-            <a href={curriculo} download>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center transition-colors">
-                {t.about.resume}
-                <svg
-                  className="ml-2"
-                  stroke="currentColor"
-                  fill="currentColor"
-                  strokeWidth="0"
-                  version="1.1"
-                  viewBox="0 0 17 17"
-                  height="1em"
-                  width="1em"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g></g>
-                  <path d="M17 16v1h-17v-1h17zM13.354 8.854l-0.707-0.707-3.646 3.646v-11.793h-1v11.794l-3.647-3.648-0.708 0.708 4.854 4.853 4.854-4.853z"></path>
-                </svg>
+          <div className="mt-6 flex flex-col items-center gap-3">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-white/70">
+              {t.about.resumeLabel}
+            </p>
+            <p className="text-center text-sm text-secondary">
+              {t.about.resumeHint}
+            </p>
+
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button
+                type="button"
+                onClick={() => handleResumeDownload("en-US")}
+                disabled={loadingLocale !== ""}
+                className="bg-blue-500 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded flex items-center transition-colors"
+              >
+                {loadingLocale === "en-US" ? t.about.resumePreparing : `${t.about.resume} · ${t.about.resumeEn}`}
               </button>
-            </a>
+
+              <button
+                type="button"
+                onClick={() => handleResumeDownload("pt-BR")}
+                disabled={loadingLocale !== ""}
+                className="border border-white/20 hover:border-white/40 hover:bg-white/5 disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-2 px-4 rounded flex items-center transition-colors"
+              >
+                {loadingLocale === "pt-BR" ? t.about.resumePreparing : `${t.about.resume} · ${t.about.resumePt}`}
+              </button>
+            </div>
           </div>
         </div>
       </div>

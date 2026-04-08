@@ -30,6 +30,12 @@ export const translations = {
       body:
         "I am a data professional with experience across analytics engineering, ERP ecosystems and business automation. My background combines SQL development, ETL routines, process automation and dashboard delivery for finance, HR, supply chain and operational teams. I work comfortably with data extraction, transformation and validation, building reliable datasets and reports that support daily operations and strategic decisions. My recent work includes automating routines with Python and C#, creating queries and stored procedures, integrating systems through APIs and turning business requirements into dashboards, reports and actionable KPIs.",
       resume: "Resume",
+      resumeLabel: "Download CV",
+      resumeHint: "Choose the language of the generated PDF resume.",
+      resumeEn: "English",
+      resumePt: "Portuguese",
+      resumePreparing: "Preparing PDF...",
+      resumeError: "I couldn't generate the resume PDF right now. Please try again in a moment.",
       imageAlt: "Profile image",
     },
     tech: {
@@ -109,6 +115,12 @@ export const translations = {
       body:
         "Sou um profissional de dados com experiência em engenharia analítica, ecossistemas ERP e automação de processos de negócio. Minha trajetória combina desenvolvimento SQL, rotinas de ETL, automação com código e entrega de dashboards para áreas financeiras, RH, suprimentos e operações. Atuo com extração, transformação e validação de dados, criando bases confiáveis e relatórios que apoiam operações do dia a dia e decisões estratégicas. Nos trabalhos mais recentes, desenvolvi automações com Python e C#, criei queries e stored procedures, integrei sistemas via APIs e transformei necessidades de negócio em dashboards, relatórios e indicadores acionáveis.",
       resume: "Currículo",
+      resumeLabel: "Baixar CV",
+      resumeHint: "Escolha o idioma do PDF gerado a partir do resume-kit.",
+      resumeEn: "Inglês",
+      resumePt: "Português",
+      resumePreparing: "Gerando PDF...",
+      resumeError: "Não consegui gerar o PDF do currículo agora. Tente novamente em instantes.",
       imageAlt: "Imagem de perfil",
     },
     tech: {
