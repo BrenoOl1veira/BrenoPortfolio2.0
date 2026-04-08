@@ -15,76 +15,89 @@ import {
 
 export const githubUsername = "BrenoOl1veira";
 
-export const navLinks = [
-  {
-    id: "about",
-    title: "About Me",
-  },
-  {
-    id: "work",
-    title: "Experience",
-  },
-  {
-    id: "works",
-    title: "Projects",
-  },
-  {
-    id: "contact",
-    title: "Contact",
-  },
-];
-
-const technologies = [
-  { name: "CSS 3", icon: css },
-  { name: "JavaScript", icon: javascript },
-  { name: "React JS", icon: reactjs },
-  { name: "Git", icon: git },
-  { name: "C#", icon: sharp },
-  { name: "Python", icon: python },
+export const technologies = [
   { name: "SQL", icon: sql },
+  { name: "Python", icon: python },
+  { name: "C#", icon: sharp },
+  { name: "React JS", icon: reactjs },
+  { name: "JavaScript", icon: javascript },
+  { name: "Git", icon: git },
   { name: "HTML 5", icon: html },
+  { name: "CSS 3", icon: css },
 ];
 
-const experiences = [
-  {
-    title: "System Analyst",
-    company_name: "JOFEGE",
-    icon: jofege,
-    iconBg: "#FFFFFF",
-    date: "Jul 2023 - Present",
-    points: [
-      "SQL Development: Creation of queries for data manipulation and extraction.",
-      "Project Support: Participation in the implementation of new technologies and IT updates.",
-      "TOTVS RM Concepts Development: Automation of processes according to user requirements.",
-      "RM Reports Development: Design and implementation of customized reports and dashboards.",
-      "Protheus and RM Reports Development: Development and maintenance of personalized reports for both systems.",
-      "Smart View Reports Development: Creation of advanced analytical reports using Smart View.",
-      "HTML, CSS, and JavaScript Reports Development: Building custom and interactive reports and dashboards.",
-      "Python and C# Routine Development: Automation and optimization of internal business processes.",
-      "TOTVS RM Maintenance: Management of permissions and resolution of daily system issues.",
-      "Formulas and Metadata Development in TOTVS RM: Creation and customization of advanced formulas and metadata implementations.",
-      "TOTVS RM System Deployments: Execution of system deployments and integrations.",
-      "Stored Procedures and Transact-SQL: Development of complex procedures and advanced queries.",
-      "Power BI Reports Development: Design of interactive dashboards and business indicators.",
-      "Power BI Dashboard Version Control on GitHub: Version management and deployment pipelines for BI projects.",
-    ],
-  },
-  {
-    title: "IT Intern",
-    company_name: "JOFEGE",
-    icon: jofege,
-    iconBg: "#FFFFFF",
-    date: "May 2022 - Nov 2023",
-    points: [
-      "Responsible for providing technical support and solutions to ensure the proper functioning of IT infrastructure.",
-      "User Support: Troubleshooting hardware, software, network, and operating system issues. Ensuring efficiency and productivity for internal users.",
-      "Network Administration: Configuration and maintenance of network environments, including Active Directory. Implementation of security policies and resolution of connectivity issues. Management of network devices such as firewalls and VPNs.",
-      "Asset Management: Tracking and controlling hardware and software assets.",
-      "Backup and Security: Implementation and management of backup solutions for data protection.",
-      "Microsoft 365 Administration: Management of user accounts, access controls, and security policies.",
-    ],
-  },
+export const getNavLinks = (t) => [
+  { id: "about", title: t.nav.about },
+  { id: "work", title: t.nav.work },
+  { id: "works", title: t.nav.works },
+  { id: "contact", title: t.nav.contact },
 ];
+
+export const getExperiences = (locale) => {
+  if (locale === "pt-BR") {
+    return [
+      {
+        title: "Analista de Sistemas",
+        company_name: "JOFEGE",
+        icon: jofege,
+        iconBg: "#FFFFFF",
+        date: "Jul 2023 - Atual",
+        points: [
+          "Desenvolvimento de queries, stored procedures e rotinas SQL para extração, tratamento e validação de dados de negócio.",
+          "Criação de automações com Python e C# para reduzir tarefas manuais e aumentar a confiabilidade de processos internos.",
+          "Construção de relatórios, dashboards e indicadores para apoiar áreas financeiras, RH, suprimentos e operação.",
+          "Atuação com TOTVS RM e Protheus na implementação de regras, fórmulas, metadados e melhorias orientadas a dados.",
+          "Integração entre sistemas, suporte a deploys e evolução de rotinas que aumentam governança e rastreabilidade da informação.",
+          "Apoio à tomada de decisão por meio de modelagem de dados, qualidade da informação e visão analítica do negócio.",
+        ],
+      },
+      {
+        title: "Estagiário de TI",
+        company_name: "JOFEGE",
+        icon: jofege,
+        iconBg: "#FFFFFF",
+        date: "Mai 2022 - Nov 2023",
+        points: [
+          "Suporte técnico a usuários, infraestrutura e sistemas corporativos com foco em continuidade operacional.",
+          "Administração de ambientes de rede, Active Directory, backups e segurança básica da informação.",
+          "Mapeamento de ativos, controle de acesso e suporte à operação de ferramentas Microsoft 365.",
+          "Base prática em processos, infraestrutura e necessidades de usuários que depois sustentou minha evolução para a área de dados.",
+        ],
+      },
+    ];
+  }
+
+  return [
+    {
+      title: "System Analyst",
+      company_name: "JOFEGE",
+      icon: jofege,
+      iconBg: "#FFFFFF",
+      date: "Jul 2023 - Present",
+      points: [
+        "Built SQL queries, stored procedures and data routines for extraction, validation and business reporting.",
+        "Developed Python and C# automations to reduce manual work and improve process reliability.",
+        "Delivered reports, dashboards and KPIs for finance, accounting, procurement, HR and operational teams.",
+        "Worked across TOTVS RM and Protheus to implement business rules, formulas, metadata and data-oriented improvements.",
+        "Supported integrations, deployments and internal solutions with stronger data governance and traceability.",
+        "Translated business needs into analytics assets and operational insights that improve decision making.",
+      ],
+    },
+    {
+      title: "IT Intern",
+      company_name: "JOFEGE",
+      icon: jofege,
+      iconBg: "#FFFFFF",
+      date: "May 2022 - Nov 2023",
+      points: [
+        "Provided technical support for users, infrastructure and internal systems with a focus on operational continuity.",
+        "Managed network environments, Active Directory, backups and basic information security routines.",
+        "Handled asset tracking, access control and Microsoft 365 support for internal teams.",
+        "Built the operational and business context that later supported my transition into data-focused work.",
+      ],
+    },
+  ];
+};
 
 export const projectOverrides = {
   Agenda_De_Tarefas: {
@@ -105,55 +118,108 @@ export const projectOverrides = {
   },
 };
 
-export const projectFallbacks = [
-  {
-    name: "Task Scheduler",
-    description: "Application developed to schedule tasks to be performed.",
-    tags: ["C#", "HTML", "CSS", ".NET5", "SQL"],
-    image: project1,
-    source_code_link: "https://github.com/BrenoOl1veira/Agenda_De_Tarefas",
-    homepage: "",
-    updated_at: "2024-01-01T00:00:00Z",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "C#",
-  },
-  {
-    name: "XAUS API",
-    description: "API developed to perform CRUD operations for a sales application.",
-    tags: ["Java", "Spring Boot", "JPA", "PostgreSQL"],
-    image: project2,
-    source_code_link: "https://github.com/BrenoOl1veira/XAUS-BACKEND",
-    homepage: "",
-    updated_at: "2024-01-01T00:00:00Z",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "Java",
-  },
-  {
-    name: "Portfolio",
-    description: "Personal portfolio developed to showcase projects and skills.",
-    tags: ["HTML", "CSS", "JavaScript"],
-    image: project3,
-    source_code_link: "https://github.com/BrenoOl1veira/BrenoPortfolio",
-    homepage: "",
-    updated_at: "2024-01-01T00:00:00Z",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "JavaScript",
-  },
-  {
-    name: "Service Orders API",
-    description: "API developed to be consumed by the front-end application.",
-    tags: ["C#", ".NET"],
-    image: project3,
-    source_code_link: "https://github.com/BrenoOl1veira/CRUD-API-",
-    homepage: "",
-    updated_at: "2024-01-01T00:00:00Z",
-    stargazers_count: 0,
-    forks_count: 0,
-    language: "C#",
-  },
-];
+export const getProjectFallbacks = (locale) => {
+  if (locale === "pt-BR") {
+    return [
+      {
+        name: "Task Scheduler",
+        description: "Aplicação desenvolvida para agendamento e acompanhamento de tarefas.",
+        tags: ["C#", "HTML", "CSS", ".NET5", "SQL"],
+        image: project1,
+        source_code_link: "https://github.com/BrenoOl1veira/Agenda_De_Tarefas",
+        homepage: "",
+        updated_at: "2024-01-01T00:00:00Z",
+        stargazers_count: 0,
+        forks_count: 0,
+        language: "C#",
+      },
+      {
+        name: "XAUS API",
+        description: "API criada para operações CRUD em uma aplicação de vendas.",
+        tags: ["Java", "Spring Boot", "JPA", "PostgreSQL"],
+        image: project2,
+        source_code_link: "https://github.com/BrenoOl1veira/XAUS-BACKEND",
+        homepage: "",
+        updated_at: "2024-01-01T00:00:00Z",
+        stargazers_count: 0,
+        forks_count: 0,
+        language: "Java",
+      },
+      {
+        name: "Portfolio",
+        description: "Portfólio pessoal criado para apresentar projetos, habilidades e experiência.",
+        tags: ["HTML", "CSS", "JavaScript"],
+        image: project3,
+        source_code_link: "https://github.com/BrenoOl1veira/BrenoPortfolio",
+        homepage: "",
+        updated_at: "2024-01-01T00:00:00Z",
+        stargazers_count: 0,
+        forks_count: 0,
+        language: "JavaScript",
+      },
+      {
+        name: "Service Orders API",
+        description: "API para ser consumida por aplicações front-end de ordens de serviço.",
+        tags: ["C#", ".NET"],
+        image: project3,
+        source_code_link: "https://github.com/BrenoOl1veira/CRUD-API-",
+        homepage: "",
+        updated_at: "2024-01-01T00:00:00Z",
+        stargazers_count: 0,
+        forks_count: 0,
+        language: "C#",
+      },
+    ];
+  }
 
-export { technologies, experiences };
+  return [
+    {
+      name: "Task Scheduler",
+      description: "Application developed to schedule and track tasks.",
+      tags: ["C#", "HTML", "CSS", ".NET5", "SQL"],
+      image: project1,
+      source_code_link: "https://github.com/BrenoOl1veira/Agenda_De_Tarefas",
+      homepage: "",
+      updated_at: "2024-01-01T00:00:00Z",
+      stargazers_count: 0,
+      forks_count: 0,
+      language: "C#",
+    },
+    {
+      name: "XAUS API",
+      description: "API created to perform CRUD operations for a sales application.",
+      tags: ["Java", "Spring Boot", "JPA", "PostgreSQL"],
+      image: project2,
+      source_code_link: "https://github.com/BrenoOl1veira/XAUS-BACKEND",
+      homepage: "",
+      updated_at: "2024-01-01T00:00:00Z",
+      stargazers_count: 0,
+      forks_count: 0,
+      language: "Java",
+    },
+    {
+      name: "Portfolio",
+      description: "Personal portfolio designed to showcase projects, skills and experience.",
+      tags: ["HTML", "CSS", "JavaScript"],
+      image: project3,
+      source_code_link: "https://github.com/BrenoOl1veira/BrenoPortfolio",
+      homepage: "",
+      updated_at: "2024-01-01T00:00:00Z",
+      stargazers_count: 0,
+      forks_count: 0,
+      language: "JavaScript",
+    },
+    {
+      name: "Service Orders API",
+      description: "API built to be consumed by front-end service order applications.",
+      tags: ["C#", ".NET"],
+      image: project3,
+      source_code_link: "https://github.com/BrenoOl1veira/CRUD-API-",
+      homepage: "",
+      updated_at: "2024-01-01T00:00:00Z",
+      stargazers_count: 0,
+      forks_count: 0,
+      language: "C#",
+    },
+  ];
+};

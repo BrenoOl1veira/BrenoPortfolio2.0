@@ -1,153 +1,72 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-// Importa estilos globais, HOC da seção e funções de animação
-import { styles } from '../styles';
-import { SectionWrapper } from '../hoc';
-import { fadeIn, textVariant } from '../utils/motion';
-// Importa os assets: imagem de perfil e arquivo de currículo
-import { logohero, curriculo } from '../assets';
+import React from "react";
+import { motion } from "framer-motion";
+import { styles } from "../styles";
+import { SectionWrapper } from "../hoc";
+import { fadeIn, textVariant } from "../utils/motion";
+import { logohero, curriculo } from "../assets";
+import { useLanguage } from "../i18n/LanguageProvider";
 
-/* 
-  Estilos inline para o container principal da seção "About".
-  - display: flex => alinha horizontalmente a imagem e o texto
-  - alignItems: center => centraliza verticalmente os itens
-  - justifyContent: center => centraliza horizontalmente o conjunto
-  - maxWidth: 72rem (1152px) => permite mais espaço para o texto no desktop
-  - margin: centraliza o container horizontalmente
-  - marginTop: 10px => cria espaçamento em relação ao topo da seção
-  - flexWrap: wrap => garante que em telas menores os elementos fiquem empilhados
-*/
 const containerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  maxWidth: '72rem',
-  margin: '0 auto',
-  marginTop: '10px',
-  flexWrap: 'wrap',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  maxWidth: "72rem",
+  margin: "0 auto",
+  marginTop: "10px",
+  flexWrap: "wrap",
 };
 
-/* 
-  Estilos inline para a imagem de perfil
-  - width / height: define o tamanho fixo da imagem
-  - marginRight: cria espaçamento entre imagem e texto
-  - borderRadius: bordas arredondadas para efeito visual agradável
-  - overflow: esconde qualquer parte que ultrapasse o contorno
-  - flexShrink: 0 => impede que a imagem encolha em telas menores
-*/
 const imageStyle = {
-  width: '300px',
-  height: '300px',
-  marginRight: '20px',
-  borderRadius: '80px',
-  overflow: 'hidden',
+  width: "300px",
+  height: "300px",
+  marginRight: "20px",
+  borderRadius: "80px",
+  overflow: "hidden",
   flexShrink: 0,
 };
 
-/* 
-  Estilos inline para o container de texto
-  - padding: cria espaçamento interno ao redor do texto
-  - não limitamos largura para permitir que o texto ocupe espaço máximo disponível
-*/
 const textContainerStyle = {
-  padding: '20px',
+  padding: "20px",
 };
 
 const About = () => {
+  const { t } = useLanguage();
+
   return (
     <>
-      {/* 
-        Cabeçalho da seção com animação
-        - motion.div: permite animar o componente com framer-motion
-        - textVariant(): animação de entrada do texto
-      */}
       <motion.div variants={textVariant()}>
-        {/* Subtítulo da seção */}
         <p className={`${styles.sectionSubText} text-center`}>
-          A little about my journey
+          {t.about.subtitle}
         </p>
-        {/* Título principal */}
         <h2 className={`${styles.sectionHeadText} text-center`}>
-          About Me
+          {t.about.title}
         </h2>
       </motion.div>
 
       <br />
 
-      {/* 
-        Container principal que engloba imagem e texto
-        - flex-auto: permite flexibilidade de tamanho
-        - style={containerStyle}: aplica os estilos definidos acima
-      */}
-      <div className='flex-auto' style={containerStyle}>
-        
-        {/* 
-          Container da imagem de perfil
-          - w-full: largura total em mobile
-          - md:w-auto: largura automática no desktop
-          - flex justify-center: centraliza a imagem horizontalmente
-          - style={imageStyle}: aplica os estilos definidos acima
-        */}
-        <div
-          className='w-full md:w-auto flex justify-center'
-          style={imageStyle}
-        >
+      <div className="flex-auto" style={containerStyle}>
+        <div className="w-full md:w-auto flex justify-center" style={imageStyle}>
           <img
             src={logohero}
-            alt="Profile Image"
-            style={{ width: '100%', height: '100%' }}
+            alt={t.about.imageAlt}
+            style={{ width: "100%", height: "100%" }}
+            loading="lazy"
           />
         </div>
 
-        {/* 
-          Container do texto
-          - w-full: largura total em mobile
-          - md:flex-1: ocupa o espaço restante no desktop
-          - style={textContainerStyle}: aplica padding interno
-        */}
-        <div 
-          className='w-full md:flex-1'
-          style={textContainerStyle}
-        >
-          {/* 
-            Parágrafo animado
-            - fadeIn(): animação de entrada do texto
-            - className: define cores, tamanho e espaçamento do texto
-          */}
+        <div className="w-full md:flex-1" style={textContainerStyle}>
           <motion.p
-            variants={fadeIn('', '', 0.1, 1)}
-            className='text-secondary text-[17px] leading-[30px]'
+            variants={fadeIn("", "", 0.1, 1)}
+            className="text-secondary text-[17px] leading-[30px]"
           >
-            I am a data professional with solid experience in automation,
-            integration, and data analysis. My career began in IT infrastructure
-            and evolved into the development, implementation, and support of
-            ERP systems, with a focus on process optimization and data
-            management—especially within the TOTVS Protheus and RM systems. I
-            have extensive knowledge of TOTVS RM and Protheus processes related
-            to financial management, accounting, purchasing, inventory, human
-            resources, and global services, ensuring efficiency and reliability
-            in business operations. I develop customized reports and automated
-            routines in RM and Protheus, also working on process automation
-            using C# and Python. I have experience in building ETL processes and
-            data integrations for Data Warehouse environments, as well as
-            system integrations using REST and SOAP APIs. I also have expertise
-            in developing interactive dashboards with Power BI and SQL queries.
-            My approach combines technical expertise with strategic vision,
-            translating complex data into clear, actionable insights that drive
-            innovation and growth. I am constantly seeking new challenges and
-            technologies to expand my impact in the data field.
+            {t.about.body}
           </motion.p>
-          
-          {/* 
-            Botão para download do currículo
-            - a tag <a> com download habilitado permite baixar o arquivo
-            - button: estilizado com cores, padding, bordas arredondadas e efeito hover
-            - svg: ícone de seta indicando download
-          */}
+
           <div className="flex items-center justify-center mt-4">
             <a href={curriculo} download>
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center transition-colors">
-                Resume
+                {t.about.resume}
                 <svg
                   className="ml-2"
                   stroke="currentColor"
@@ -171,5 +90,4 @@ const About = () => {
   );
 };
 
-// Exporta o componente com HOC SectionWrapper para layout e animações da seção
-export default SectionWrapper(About, 'about');
+export default SectionWrapper(About, "about");

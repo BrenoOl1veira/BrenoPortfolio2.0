@@ -3,13 +3,13 @@ import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeli
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
-import { experiences } from "../constants";
+import { getExperiences } from "../constants";
 import { SectionWrapper } from "../hoc";
 import { textVariant } from "../utils/motion";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 import "react-vertical-timeline-component/style.min.css";
 
-// Card individual da experiência
 const ExperienceCard = ({ experience }) => {
   return (
     <VerticalTimelineElement
@@ -56,23 +56,22 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
-// Seção principal de experiências
 const Experience = () => {
+  const { locale, t } = useLanguage();
+  const experiences = getExperiences(locale);
+
   return (
     <>
-      <motion.div
-        variants={textVariant()}
-        className="px-4 sm:px-6 md:px-0" // Garante padding lateral em mobile
-      >
+      <motion.div variants={textVariant()} className="px-4 sm:px-6 md:px-0">
         <p
           className={`${styles.sectionSubText} text-center text-xs sm:text-sm md:text-base`}
         >
-          What I have done so far
+          {t.experience.subtitle}
         </p>
         <h2
           className={`${styles.sectionHeadText} text-center text-xl sm:text-3xl md:text-4xl font-bold`}
         >
-          Professional Experience
+          {t.experience.title}
         </h2>
       </motion.div>
 

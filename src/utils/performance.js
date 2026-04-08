@@ -29,3 +29,25 @@ export const useEnhancedGraphics = () => {
 
   return enhancedGraphics;
 };
+
+export const useElementVisibility = (elementRef, options = {}) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const element = elementRef.current;
+    if (!element || typeof IntersectionObserver === "undefined") {
+      setIsVisible(true);
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      setIsVisible(entry.isIntersecting);
+    }, options);
+
+    observer.observe(element);
+
+    return () => observer.disconnect();
+  }, [elementRef, options]);
+
+  return isVisible;
+};

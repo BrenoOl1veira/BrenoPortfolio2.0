@@ -1,7 +1,13 @@
-import React, { Suspense, useRef, useEffect } from "react";
+import React, { Suspense, useEffect, useRef } from "react";
 import { LoopRepeat } from "three";
 import { Canvas } from "@react-three/fiber";
-import { useGLTF, useAnimations, Html, useProgress } from "@react-three/drei";
+import {
+  Environment,
+  Html,
+  useAnimations,
+  useGLTF,
+  useProgress,
+} from "@react-three/drei";
 
 const CanvasLoader = () => {
   const { progress } = useProgress();
@@ -22,7 +28,7 @@ const CanvasLoader = () => {
           fontSize: 14,
           color: "#F1F1F1",
           fontWeight: 800,
-          marginTop: 24,
+          marginTop: 28,
         }}
       >
         {progress.toFixed(0)}%
@@ -42,10 +48,47 @@ const Astronaut = () => {
     scene.traverse((node) => {
       if (!node.isMesh || !node.material) return;
 
+      const name = node.name.toLowerCase();
+
+      if (name.includes("helmet") || name.includes("visor")) {
+        node.material.color?.set("#e8d48a");
+        Object.assign(node.material, {
+          metalness: 0.85,
+          roughness: 0.12,
+          transparent: true,
+          opacity: 0.92,
+          envMapIntensity: 1.5,
+          clearcoat: 0.8,
+          clearcoatRoughness: 0.08,
+        });
+      } else if (name.includes("suit") || name.includes("body")) {
+        node.material.color?.set("#f8f8f8");
+        Object.assign(node.material, {
+          metalness: 0.24,
+          roughness: 0.42,
+          envMapIntensity: 0.8,
+          clearcoat: 0.35,
+          clearcoatRoughness: 0.22,
+        });
+      } else if (
+        name.includes("tube") ||
+        name.includes("valve") ||
+        name.includes("connector")
+      ) {
+        node.material.color?.set("#1e3a8a");
+        Object.assign(node.material, {
+          metalness: 0.7,
+          roughness: 0.22,
+          envMapIntensity: 1,
+        });
+      }
+
+      if ("emissiveIntensity" in node.material) {
+        node.material.emissiveIntensity = 0.08;
+      }
+
       node.castShadow = false;
       node.receiveShadow = false;
-      node.material.roughness = Math.min(node.material.roughness ?? 0.7, 0.7);
-      node.material.metalness = Math.min(node.material.metalness ?? 0.2, 0.35);
       node.material.needsUpdate = true;
     });
   }, [scene]);
@@ -67,9 +110,9 @@ const Astronaut = () => {
     <primitive
       ref={group}
       object={scene}
-      scale={1.55}
-      position={[0, -1.5, 0]}
-      rotation={[0, Math.PI * 0.08, 0]}
+      scale={1.7}
+      position={[0, -1.55, 0]}
+      rotation={[0, Math.PI * 0.1, 0]}
     />
   );
 };
@@ -79,30 +122,41 @@ useGLTF.preload("/astronaut/scene.gltf");
 const AstronautCanvas = () => {
   return (
     <Canvas
-      dpr={[1, 1.2]}
+      dpr={[1, 1.3]}
       gl={{
         alpha: true,
-        antialias: false,
+        antialias: true,
         powerPreference: "low-power",
       }}
       camera={{
-        fov: 32,
+        fov: 30,
         near: 0.1,
         far: 100,
-        position: [0, 0.6, 6],
+        position: [0, 0.8, 6],
       }}
+      performance={{ min: 0.7 }}
       style={{
         background: "transparent",
         cursor: "default",
       }}
     >
       <Suspense fallback={<CanvasLoader />}>
-        <hemisphereLight intensity={0.7} groundColor="#0f172a" color="#dbeafe" />
-        <ambientLight intensity={0.45} />
-        <directionalLight position={[4, 5, 4]} intensity={1.1} color="#ffffff" />
-        <directionalLight position={[-3, 2, -4]} intensity={0.25} color="#60a5fa" />
+        <hemisphereLight intensity={0.8} groundColor="#0f172a" color="#dbeafe" />
+        <ambientLight intensity={0.55} />
+        <directionalLight position={[5, 7, 5]} intensity={1.45} color="#ffffff" />
+        <directionalLight position={[-5, 3, -5]} intensity={0.28} color="#4f8bff" />
+        <spotLight
+          position={[2, 4, 3]}
+          angle={0.24}
+          penumbra={0.5}
+          intensity={0.35}
+          distance={16}
+          decay={2}
+          color="#ffeb99"
+        />
+        <Environment preset="city" background={false} />
 
-        <group position={[0, -2.1, 0]}>
+        <group position={[0, -2.25, 0]}>
           <Astronaut />
         </group>
       </Suspense>

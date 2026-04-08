@@ -7,10 +7,11 @@ import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import {
   githubUsername,
-  projectFallbacks,
+  getProjectFallbacks,
   projectOverrides,
 } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const FEATURED_PROJECTS_LIMIT = 3;
 const tagColorPalette = [
@@ -20,25 +21,12 @@ const tagColorPalette = [
   "red-text-gradient",
 ];
 
-const fallbackTag = "Source Code";
-
 const formatRepoName = (repoName) =>
   repoName
     .replace(/[-_]+/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
 const getTagColor = (index) => tagColorPalette[index % tagColorPalette.length];
-
-const normalizeTags = (repo, override) => {
-  const overrideTags = override?.tags || [];
-  const derivedTags = [repo.language, fallbackTag].filter(Boolean);
-  const merged = [...overrideTags, ...derivedTags];
-
-  return [...new Set(merged)].slice(0, 5).map((tag, index) => ({
-    name: tag,
-    color: getTagColor(index),
-  }));
-};
 
 const getProjectScore = (repo) => {
   const updatedAt = new Date(repo.updated_at).getTime();
@@ -51,28 +39,11 @@ const getProjectScore = (repo) => {
   );
 };
 
-const normalizeRepo = (repo) => {
-  const override = projectOverrides[repo.name];
-
-  return {
-    name: formatRepoName(repo.name),
-    description:
-      repo.description ||
-      "Public GitHub repository available in my portfolio feed.",
-    tags: normalizeTags(repo, override),
-    image: override?.image || "",
-    source_code_link: repo.html_url,
-    homepage: repo.homepage || "",
-    updated_at: repo.updated_at,
-    stargazers_count: repo.stargazers_count || 0,
-    forks_count: repo.forks_count || 0,
-    score: getProjectScore(repo),
-  };
-};
-
 const ProjectCard = React.memo(
   ({
     index,
+    locale,
+    copy,
     name,
     description,
     tags,
@@ -84,7 +55,7 @@ const ProjectCard = React.memo(
     forks_count,
   }) => {
     const lastUpdate = updated_at
-      ? new Date(updated_at).toLocaleDateString("pt-BR")
+      ? new Date(updated_at).toLocaleDateString(locale)
       : null;
 
     return (
@@ -116,7 +87,7 @@ const ProjectCard = React.memo(
               ) : (
                 <div className="flex h-full w-full flex-col justify-end bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.45),_transparent_45%),linear-gradient(135deg,#0f172a_0%,#111827_45%,#1e293b_100%)] p-6">
                   <p className="text-xs uppercase tracking-[0.3em] text-white/50">
-                    GitHub Repository
+                    {copy.repoLabel}
                   </p>
                   <h3 className="mt-2 text-2xl font-black text-white">{name}</h3>
                 </div>
@@ -132,7 +103,7 @@ const ProjectCard = React.memo(
                       aria-label={`Open ${name} live project`}
                       className="bg-white/10 px-3 py-2 rounded-full text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/20 transition-colors"
                     >
-                      Live
+                      {copy.live}
                     </button>
                   )}
                   <button
@@ -173,9 +144,9 @@ const ProjectCard = React.memo(
               </div>
 
               <div className="mt-5 flex items-center justify-between text-xs text-white/50">
-                <span>{lastUpdate ? `Updated ${lastUpdate}` : "Public repo"}</span>
+                <span>{lastUpdate ? `${copy.updated} ${lastUpdate}` : copy.publicRepo}</span>
                 <span>
-                  {stargazers_count} stars • {forks_count} forks
+                  {stargazers_count} {copy.stars} • {forks_count} {copy.forks}
                 </span>
               </div>
             </div>
@@ -187,13 +158,46 @@ const ProjectCard = React.memo(
 );
 
 const Works = () => {
-  const [projects, setProjects] = useState(projectFallbacks);
+  const { locale, t } = useLanguage();
+  const [projects, setProjects] = useState(getProjectFallbacks(locale));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showAllProjects, setShowAllProjects] = useState(false);
 
   useEffect(() => {
+    setProjects(getProjectFallbacks(locale));
+  }, [locale]);
+
+  useEffect(() => {
     let ignore = false;
+
+    const normalizeTags = (repo, override) => {
+      const overrideTags = override?.tags || [];
+      const derivedTags = [repo.language, t.works.sourceTag].filter(Boolean);
+      const merged = [...overrideTags, ...derivedTags];
+
+      return [...new Set(merged)].slice(0, 5).map((tag, index) => ({
+        name: tag,
+        color: getTagColor(index),
+      }));
+    };
+
+    const normalizeRepo = (repo) => {
+      const override = projectOverrides[repo.name];
+
+      return {
+        name: formatRepoName(repo.name),
+        description: repo.description || t.works.fallbackDescription,
+        tags: normalizeTags(repo, override),
+        image: override?.image || "",
+        source_code_link: repo.html_url,
+        homepage: repo.homepage || "",
+        updated_at: repo.updated_at,
+        stargazers_count: repo.stargazers_count || 0,
+        forks_count: repo.forks_count || 0,
+        score: getProjectScore(repo),
+      };
+    };
 
     const loadProjects = async () => {
       try {
@@ -222,7 +226,7 @@ const Works = () => {
         }
       } catch {
         if (!ignore) {
-          setError("Unable to load GitHub projects right now. Showing saved highlights.");
+          setError(t.works.error);
         }
       } finally {
         if (!ignore) {
@@ -231,12 +235,13 @@ const Works = () => {
       }
     };
 
+    setLoading(true);
     loadProjects();
 
     return () => {
       ignore = true;
     };
-  }, []);
+  }, [locale, t]);
 
   const featuredProjects = useMemo(
     () => projects.slice(0, FEATURED_PROJECTS_LIMIT),
@@ -251,9 +256,9 @@ const Works = () => {
     <>
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
-          Featured work from GitHub
+          {t.works.subtitle}
         </p>
-        <h2 className={`${styles.sectionHeadText} text-center`}>Projects.</h2>
+        <h2 className={`${styles.sectionHeadText} text-center`}>{t.works.title}</h2>
       </motion.div>
 
       <div className="w-full flex justify-center">
@@ -261,8 +266,7 @@ const Works = () => {
           variants={fadeIn("", "", 0.1, 1)}
           className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px] text-center"
         >
-          I highlight the 3 strongest and most recently active repositories first,
-          then keep the rest available behind a secondary view.
+          {t.works.intro}
         </motion.p>
       </div>
 
@@ -273,13 +277,13 @@ const Works = () => {
           rel="noopener noreferrer"
           className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/5"
         >
-          View All on GitHub
+          {t.works.viewAll}
         </a>
       </div>
 
       {loading && (
         <p className="mt-8 text-center text-sm text-secondary">
-          Loading repositories from GitHub...
+          {t.works.loading}
         </p>
       )}
 
@@ -289,7 +293,13 @@ const Works = () => {
 
       <div className="mt-16 flex flex-wrap gap-7 justify-center">
         {featuredProjects.map((project, index) => (
-          <ProjectCard key={`${project.source_code_link}-${index}`} index={index} {...project} />
+          <ProjectCard
+            key={`${project.source_code_link}-${index}`}
+            index={index}
+            locale={locale}
+            copy={t.works}
+            {...project}
+          />
         ))}
       </div>
 
@@ -301,8 +311,8 @@ const Works = () => {
             className="rounded-full bg-[#3b82f6] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2563eb]"
           >
             {showAllProjects
-              ? "Show Less Projects"
-              : `View More Projects (${otherProjects.length})`}
+              ? t.works.viewLess
+              : `${t.works.viewMore} (${otherProjects.length})`}
           </button>
 
           {showAllProjects && (
@@ -311,6 +321,8 @@ const Works = () => {
                 <ProjectCard
                   key={`${project.source_code_link}-extra-${index}`}
                   index={index}
+                  locale={locale}
+                  copy={t.works}
                   {...project}
                 />
               ))}

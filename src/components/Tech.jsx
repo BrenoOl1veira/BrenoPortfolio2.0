@@ -3,20 +3,22 @@ import { SectionWrapper } from "../hoc";
 import { technologies } from "../constants";
 import { styles } from "../styles";
 import { useEnhancedGraphics } from "../utils/performance";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const BallCanvas = lazy(() => import("./canvas/Ball"));
 
 const Tech = () => {
   const enhancedGraphics = useEnhancedGraphics();
+  const { t } = useLanguage();
 
   return (
     <section className="w-full text-center">
       <div className="mb-10">
         <p className={`${styles.sectionSubText} text-center`}>
-          A little about my skills
+          {t.tech.subtitle}
         </p>
 
-        <h2 className={`${styles.sectionHeadText} text-center`}>Skills</h2>
+        <h2 className={`${styles.sectionHeadText} text-center`}>{t.tech.title}</h2>
       </div>
 
       <div className="flex flex-row flex-wrap justify-center gap-10 max-w-5xl mx-auto">

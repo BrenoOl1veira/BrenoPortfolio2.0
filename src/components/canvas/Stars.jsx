@@ -1,25 +1,25 @@
-import { useState, useRef, Suspense } from "react";
+import { useMemo, useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as random from "maath/random";
 
 const Stars = (props) => {
   const ref = useRef();
-  const [sphere] = useState(() => {
-    const points = new Float32Array(1800 * 3);
-    const result = random.inSphere(points, { radius: 1.1 });
+  const sphere = useMemo(() => {
+    const points = new Float32Array(2600 * 3);
+    const result = random.inSphere(points, { radius: 1.15 });
 
     for (let i = 0; i < result.length; i += 1) {
       if (!Number.isFinite(result[i])) result[i] = 0;
     }
 
     return result;
-  });
+  }, []);
 
   useFrame((_, delta) => {
     if (ref.current) {
-      ref.current.rotation.x -= delta / 14;
-      ref.current.rotation.y -= delta / 20;
+      ref.current.rotation.x -= delta / 11;
+      ref.current.rotation.y -= delta / 16;
     }
   });
 
@@ -29,7 +29,7 @@ const Stars = (props) => {
         <PointMaterial
           transparent
           color="#f272c8"
-          size={0.0022}
+          size={0.0023}
           sizeAttenuation
           depthWrite={false}
         />
@@ -41,9 +41,10 @@ const Stars = (props) => {
 const StarsCanvas = () => (
   <div className="w-full h-auto absolute inset-0 z-[-1]">
     <Canvas
-      dpr={[1, 1.2]}
+      dpr={[1, 1.25]}
       gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
       camera={{ position: [0, 0, 1] }}
+      performance={{ min: 0.7 }}
     >
       <Suspense fallback={null}>
         <Stars />

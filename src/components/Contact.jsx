@@ -6,7 +6,8 @@ import { useMediaQuery } from "react-responsive";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
-import { useEnhancedGraphics } from "../utils/performance";
+import { useElementVisibility, useEnhancedGraphics } from "../utils/performance";
+import { useLanguage } from "../i18n/LanguageProvider";
 
 const AstronautCanvas = lazy(() => import("./canvas/Astronaut"));
 
@@ -19,6 +20,12 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const isMobile = useMediaQuery({ maxWidth: 800 });
   const enhancedGraphics = useEnhancedGraphics();
+  const { t } = useLanguage();
+  const sceneRef = useRef(null);
+  const shouldRenderAstronaut = useElementVisibility(sceneRef, {
+    rootMargin: "220px 0px",
+    threshold: 0.05,
+  });
   const emailConfigMissing = [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY].some((value) =>
     value.startsWith("YOUR_")
   );
@@ -31,7 +38,7 @@ const Contact = () => {
       const name = formData.get("name") || "Hello";
       const email = formData.get("email") || "";
       const message = formData.get("message") || "";
-      const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+      const subject = encodeURIComponent(`${t.contact.subjectPrefix} ${name}`);
       const body = encodeURIComponent(
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       );
@@ -45,13 +52,13 @@ const Contact = () => {
     emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY).then(
       () => {
         setLoading(false);
-        alert("Message sent successfully!");
+        alert(t.contact.success);
         formRef.current.reset();
       },
       (error) => {
         setLoading(false);
         console.error(error);
-        alert("Oops! Something went wrong, please try again.");
+        alert(t.contact.error);
       }
     );
   };
@@ -59,20 +66,21 @@ const Contact = () => {
   return (
     <div className="xl:mt-12 flex flex-col gap-10 overflow-visible relative">
       <motion.div
+        ref={sceneRef}
         variants={slideIn("right", "tween", 0.2, 1)}
         className="w-full relative z-10 overflow-hidden rounded-[28px] border border-white/5 bg-gradient-to-b from-[#0f172a] to-[#050816]"
         style={{
           height: enhancedGraphics ? (isMobile ? "340px" : "560px") : "180px",
         }}
       >
-        {enhancedGraphics ? (
+        {enhancedGraphics && shouldRenderAstronaut ? (
           <Suspense fallback={null}>
             <AstronautCanvas />
           </Suspense>
         ) : (
           <div className="flex h-full items-center justify-center px-6 text-center">
             <p className="max-w-xl text-sm leading-7 text-secondary sm:text-base">
-              Let&apos;s connect to talk about automation, data projects and product ideas.
+              {t.contact.banner}
             </p>
           </div>
         )}
@@ -85,13 +93,12 @@ const Contact = () => {
           marginTop: enhancedGraphics ? (isMobile ? "-60px" : "-90px") : "0px",
         }}
       >
-        <p className={styles.sectionSubText}>Get in touch</p>
-        <h3 className={styles.sectionHeadText}>Contact.</h3>
+        <p className={styles.sectionSubText}>{t.contact.subtitle}</p>
+        <h3 className={styles.sectionHeadText}>{t.contact.title}</h3>
 
         {emailConfigMissing && (
           <p className="mt-4 text-sm leading-6 text-secondary">
-            The email service is not configured yet. The form will open your
-            default email app with the message ready to send.
+            {t.contact.helper}
           </p>
         )}
 
@@ -101,33 +108,33 @@ const Contact = () => {
           className="mt-12 flex flex-col gap-8"
         >
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Name</span>
+            <span className="text-white font-medium mb-4">{t.contact.name}</span>
             <input
               type="text"
               name="name"
-              placeholder="What's your name?"
+              placeholder={t.contact.namePlaceholder}
               required
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
           </label>
 
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Email</span>
+            <span className="text-white font-medium mb-4">{t.contact.email}</span>
             <input
               type="email"
               name="email"
-              placeholder="What's your email address?"
+              placeholder={t.contact.emailPlaceholder}
               required
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
           </label>
 
           <label className="flex flex-col">
-            <span className="text-white font-medium mb-4">Your Message</span>
+            <span className="text-white font-medium mb-4">{t.contact.message}</span>
             <textarea
               rows={7}
               name="message"
-              placeholder="What do you want to say?"
+              placeholder={t.contact.messagePlaceholder}
               required
               className="bg-tertiary py-4 px-6 placeholder:text-secondary text-white rounded-lg outline-none border-none font-medium"
             />
@@ -137,7 +144,7 @@ const Contact = () => {
             type="submit"
             className="bg-tertiary py-3 px-8 rounded-xl outline-none w-fit text-white font-bold shadow-md shadow-primary"
           >
-            {loading ? "Sending..." : emailConfigMissing ? "Open Email App" : "Send"}
+            {loading ? t.contact.sending : emailConfigMissing ? t.contact.openEmail : t.contact.send}
           </button>
         </form>
       </motion.div>
