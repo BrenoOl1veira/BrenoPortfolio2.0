@@ -1,57 +1,17 @@
 import React, { Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Decal, Float, Preload, useTexture } from "@react-three/drei";
+import { Decal, Float, useTexture } from "@react-three/drei";
 import CanvasLoader from "../Loader";
 
-const BallCanvas = ({ icon }) => {
-  // Detecta se é mobile
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-
-  // Se for mobile, mostra apenas a imagem PNG
-  if (isMobile) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        <img 
-          src={icon} 
-          alt="Skill icon" 
-          className="max-w-full max-h-full object-contain"
-          style={{ width: '80px', height: '80px' }}
-        />
-      </div>
-    );
-  }
-
-  // Se for desktop, mostra o componente 3D original
-  return (
-    <div className="w-full h-full">
-      <Canvas
-        frameloop="always"
-        dpr={[1, 1.5]}
-        gl={{ preserveDrawingBuffer: true }}
-        onCreated={({ gl }) => {
-          gl.domElement.style.pointerEvents = "none";
-          gl.domElement.style.touchAction = "pan-y";
-        }}
-      >
-        <Suspense fallback={<CanvasLoader />}>
-          <Ball imgUrl={icon} />
-        </Suspense>
-        <Preload all />
-      </Canvas>
-    </div>
-  );
-};
-
-// Componente Ball original (precisa ser movido para fora ou mantido no mesmo arquivo)
 const Ball = ({ imgUrl }) => {
   const [decal] = useTexture([imgUrl]);
 
   return (
-    <Float speed={1.25} rotationIntensity={0.8} floatIntensity={1.5}>
-      <ambientLight intensity={0.5} />
-      <directionalLight position={[0, 0, 0.1]} intensity={1} />
-      <mesh castShadow receiveShadow scale={2.5}>
-        <sphereGeometry args={[1, 64, 64]} />
+    <Float speed={1} rotationIntensity={0.55} floatIntensity={0.9}>
+      <ambientLight intensity={0.45} />
+      <directionalLight position={[0, 0, 0.1]} intensity={0.8} />
+      <mesh scale={2.25}>
+        <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial
           color="#f0f0f0"
           polygonOffset
@@ -67,6 +27,26 @@ const Ball = ({ imgUrl }) => {
         />
       </mesh>
     </Float>
+  );
+};
+
+const BallCanvas = ({ icon }) => {
+  return (
+    <div className="w-full h-full">
+      <Canvas
+        frameloop="always"
+        dpr={[1, 1.2]}
+        gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
+        onCreated={({ gl }) => {
+          gl.domElement.style.pointerEvents = "none";
+          gl.domElement.style.touchAction = "pan-y";
+        }}
+      >
+        <Suspense fallback={<CanvasLoader />}>
+          <Ball imgUrl={icon} />
+        </Suspense>
+      </Canvas>
+    </div>
   );
 };
 

@@ -1,134 +1,325 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 
 import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
-import { projects } from "../constants";
+import {
+  githubUsername,
+  projectFallbacks,
+  projectOverrides,
+} from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 
-/* ========================================================
-   ProjectCard
-   --------------------------------------------------------
-   Componente que renderiza um card de projeto padronizado
-   - Tilt para efeito 3D em desktop
-   - motion.div para animação de entrada
-   - Lazy load nas imagens
-   - Memoizado para evitar re-renders desnecessários
-======================================================== */
-const ProjectCard = React.memo(({ index, name, description, tags, image, source_code_link }) => {
-  return (
-    <motion.div
-      // Animação de entrada para cada card
-      variants={fadeIn("up", "spring", index * 0.2, 0.6)}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.2 }} // anima apenas quando entra na tela
-    >
-      {/* Efeito Tilt 3D */}
-      <Tilt
-        tiltMaxAngleX={12}
-        tiltMaxAngleY={12}
-        perspective={1000}
-        scale={1.02}
-        transitionSpeed={400}
-        gyroscope={true}
-        className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full"
-        tiltEnable={typeof window !== "undefined" && window.innerWidth >= 640} // desativa tilt em mobile
-      >
-        <div className="flex flex-col h-full">
-          
-          {/* ==================== ÁREA DA IMAGEM ==================== */}
-          <div className="relative w-full h-[230px] rounded-2xl overflow-hidden">
-            <img
-              src={image}
-              alt={`${name} screenshot`}
-              className="w-full h-full object-cover"
-              loading="lazy" // carrega a imagem apenas quando visível
-            />
+const FEATURED_PROJECTS_LIMIT = 3;
+const tagColorPalette = [
+  "blue-text-gradient",
+  "green-text-gradient",
+  "pink-text-gradient",
+  "red-text-gradient",
+];
 
-            {/* Botão GitHub no canto superior direito */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-3 right-3 pointer-events-auto">
-                <button
-                  onClick={() => window.open(source_code_link, "_blank", "noopener,noreferrer")}
-                  aria-label={`Open ${name} project source code on GitHub`}
-                  className="bg-black/60 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur-sm hover:scale-105 transition-transform"
-                >
-                  <img src={github} alt="github icon" className="w-5 h-5 object-contain" />
-                </button>
+const fallbackTag = "Source Code";
+
+const formatRepoName = (repoName) =>
+  repoName
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+const getTagColor = (index) => tagColorPalette[index % tagColorPalette.length];
+
+const normalizeTags = (repo, override) => {
+  const overrideTags = override?.tags || [];
+  const derivedTags = [repo.language, fallbackTag].filter(Boolean);
+  const merged = [...overrideTags, ...derivedTags];
+
+  return [...new Set(merged)].slice(0, 5).map((tag, index) => ({
+    name: tag,
+    color: getTagColor(index),
+  }));
+};
+
+const getProjectScore = (repo) => {
+  const updatedAt = new Date(repo.updated_at).getTime();
+  const recentBoost = Number.isFinite(updatedAt) ? updatedAt / 100000000000 : 0;
+
+  return (
+    (repo.stargazers_count || 0) * 10 +
+    (repo.forks_count || 0) * 6 +
+    recentBoost
+  );
+};
+
+const normalizeRepo = (repo) => {
+  const override = projectOverrides[repo.name];
+
+  return {
+    name: formatRepoName(repo.name),
+    description:
+      repo.description ||
+      "Public GitHub repository available in my portfolio feed.",
+    tags: normalizeTags(repo, override),
+    image: override?.image || "",
+    source_code_link: repo.html_url,
+    homepage: repo.homepage || "",
+    updated_at: repo.updated_at,
+    stargazers_count: repo.stargazers_count || 0,
+    forks_count: repo.forks_count || 0,
+    score: getProjectScore(repo),
+  };
+};
+
+const ProjectCard = React.memo(
+  ({
+    index,
+    name,
+    description,
+    tags,
+    image,
+    source_code_link,
+    homepage,
+    updated_at,
+    stargazers_count,
+    forks_count,
+  }) => {
+    const lastUpdate = updated_at
+      ? new Date(updated_at).toLocaleDateString("pt-BR")
+      : null;
+
+    return (
+      <motion.div
+        variants={fadeIn("up", "spring", index * 0.12, 0.6)}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.15 }}
+      >
+        <Tilt
+          tiltMaxAngleX={12}
+          tiltMaxAngleY={12}
+          perspective={1000}
+          scale={1.02}
+          transitionSpeed={400}
+          gyroscope={true}
+          className="bg-tertiary p-5 rounded-2xl sm:w-[360px] w-full border border-white/5"
+          tiltEnable={typeof window !== "undefined" && window.innerWidth >= 640}
+        >
+          <div className="flex flex-col h-full">
+            <div className="relative w-full h-[230px] rounded-2xl overflow-hidden">
+              {image ? (
+                <img
+                  src={image}
+                  alt={`${name} screenshot`}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="flex h-full w-full flex-col justify-end bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.45),_transparent_45%),linear-gradient(135deg,#0f172a_0%,#111827_45%,#1e293b_100%)] p-6">
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/50">
+                    GitHub Repository
+                  </p>
+                  <h3 className="mt-2 text-2xl font-black text-white">{name}</h3>
+                </div>
+              )}
+
+              <div className="absolute inset-0 pointer-events-none">
+                <div className="absolute top-3 right-3 flex gap-2 pointer-events-auto">
+                  {homepage && (
+                    <button
+                      onClick={() =>
+                        window.open(homepage, "_blank", "noopener,noreferrer")
+                      }
+                      aria-label={`Open ${name} live project`}
+                      className="bg-white/10 px-3 py-2 rounded-full text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/20 transition-colors"
+                    >
+                      Live
+                    </button>
+                  )}
+                  <button
+                    onClick={() =>
+                      window.open(source_code_link, "_blank", "noopener,noreferrer")
+                    }
+                    aria-label={`Open ${name} project source code on GitHub`}
+                    className="bg-black/60 w-10 h-10 rounded-full flex justify-center items-center backdrop-blur-sm hover:scale-105 transition-transform"
+                  >
+                    <img
+                      src={github}
+                      alt="github icon"
+                      className="w-5 h-5 object-contain"
+                    />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-5 flex-1 flex flex-col">
+              <h3 className="text-white font-bold text-[20px] sm:text-[24px]">
+                {name}
+              </h3>
+
+              <p className="mt-2 text-secondary text-[14px] leading-relaxed min-h-[56px]">
+                {description}
+              </p>
+
+              <div className="mt-4 flex flex-wrap gap-2">
+                {tags.map((tag) => (
+                  <span
+                    key={`${name}-${tag.name}`}
+                    className={`text-[13px] ${tag.color} bg-transparent`}
+                  >
+                    #{tag.name}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-5 flex items-center justify-between text-xs text-white/50">
+                <span>{lastUpdate ? `Updated ${lastUpdate}` : "Public repo"}</span>
+                <span>
+                  {stargazers_count} stars • {forks_count} forks
+                </span>
               </div>
             </div>
           </div>
+        </Tilt>
+      </motion.div>
+    );
+  }
+);
 
-          {/* ==================== CONTEÚDO (TÍTULO + DESCRIÇÃO) ==================== */}
-          <div className="mt-5 flex-1 flex flex-col">
-            <h3 className="text-white font-bold text-[20px] sm:text-[24px]">{name}</h3>
-
-            <p className="mt-2 text-secondary text-[14px] leading-relaxed min-h-[56px]">
-              {description}
-            </p>
-
-            {/* ==================== TAGS ==================== */}
-            <div className="mt-4 flex flex-wrap gap-2">
-              {tags.map((tag) => (
-                <span
-                  key={`${name}-${tag.name}`}
-                  className={`text-[13px] ${tag.color} bg-transparent`}
-                >
-                  #{tag.name}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Tilt>
-    </motion.div>
-  );
-});
-
-/* ========================================================
-   Works
-   --------------------------------------------------------
-   Componente que lista todos os projetos
-   - Animações de entrada usando Framer Motion
-   - Grid responsivo usando flex-wrap
-======================================================== */
 const Works = () => {
+  const [projects, setProjects] = useState(projectFallbacks);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [showAllProjects, setShowAllProjects] = useState(false);
+
+  useEffect(() => {
+    let ignore = false;
+
+    const loadProjects = async () => {
+      try {
+        const response = await fetch(
+          `https://api.github.com/users/${githubUsername}/repos?per_page=100&sort=updated`,
+          {
+            headers: {
+              Accept: "application/vnd.github+json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`GitHub API returned ${response.status}`);
+        }
+
+        const repositories = await response.json();
+        const normalizedProjects = repositories
+          .filter((repo) => !repo.fork)
+          .map(normalizeRepo)
+          .sort((a, b) => b.score - a.score);
+
+        if (!ignore && normalizedProjects.length > 0) {
+          setProjects(normalizedProjects);
+          setError("");
+        }
+      } catch {
+        if (!ignore) {
+          setError("Unable to load GitHub projects right now. Showing saved highlights.");
+        }
+      } finally {
+        if (!ignore) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadProjects();
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  const featuredProjects = useMemo(
+    () => projects.slice(0, FEATURED_PROJECTS_LIMIT),
+    [projects]
+  );
+  const otherProjects = useMemo(
+    () => projects.slice(FEATURED_PROJECTS_LIMIT),
+    [projects]
+  );
+
   return (
     <>
-      {/* Título da seção */}
       <motion.div variants={textVariant()}>
         <p className={`${styles.sectionSubText} text-center`}>
-          Welcome to my projects showcase!
+          Featured work from GitHub
         </p>
         <h2 className={`${styles.sectionHeadText} text-center`}>Projects.</h2>
       </motion.div>
 
-      {/* Texto introdutório opcional */}
-      <div className="w-full flex">
+      <div className="w-full flex justify-center">
         <motion.p
           variants={fadeIn("", "", 0.1, 1)}
           className="mt-3 text-secondary text-[17px] max-w-3xl leading-[30px] text-center"
         >
-          {/* Optional short description */}
+          I highlight the 3 strongest and most recently active repositories first,
+          then keep the rest available behind a secondary view.
         </motion.p>
       </div>
 
-      {/* Grid de cards */}
-      <div className="mt-20 flex flex-wrap gap-7 justify-center">
-        {projects.map((project, index) => (
-          <ProjectCard key={`project-${index}`} index={index} {...project} />
+      <div className="mt-6 flex justify-center">
+        <a
+          href={`https://github.com/${githubUsername}?tab=repositories`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/5"
+        >
+          View All on GitHub
+        </a>
+      </div>
+
+      {loading && (
+        <p className="mt-8 text-center text-sm text-secondary">
+          Loading repositories from GitHub...
+        </p>
+      )}
+
+      {!loading && error && (
+        <p className="mt-8 text-center text-sm text-secondary">{error}</p>
+      )}
+
+      <div className="mt-16 flex flex-wrap gap-7 justify-center">
+        {featuredProjects.map((project, index) => (
+          <ProjectCard key={`${project.source_code_link}-${index}`} index={index} {...project} />
         ))}
       </div>
+
+      {otherProjects.length > 0 && (
+        <div className="mt-12 flex flex-col items-center">
+          <button
+            type="button"
+            onClick={() => setShowAllProjects((current) => !current)}
+            className="rounded-full bg-[#3b82f6] px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-[#2563eb]"
+          >
+            {showAllProjects
+              ? "Show Less Projects"
+              : `View More Projects (${otherProjects.length})`}
+          </button>
+
+          {showAllProjects && (
+            <div className="mt-10 flex flex-wrap gap-7 justify-center">
+              {otherProjects.map((project, index) => (
+                <ProjectCard
+                  key={`${project.source_code_link}-extra-${index}`}
+                  index={index}
+                  {...project}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </>
   );
 };
 
-/* ========================================================
-   Export
-   --------------------------------------------------------
-   SectionWrapper adiciona padding, animação de seção
-======================================================== */
 export default SectionWrapper(Works, "works");

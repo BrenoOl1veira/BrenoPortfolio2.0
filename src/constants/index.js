@@ -13,13 +13,8 @@ import {
   project3,
 } from "../assets";
 
-/**
- * navLinks
- * ----------------------------------------
- * Array que define os links de navegação do site.
- * - id: usado para âncoras na página (#about, #work, #contact)
- * - title: texto exibido no menu (pode ser traduzido se desejar)
- */
+export const githubUsername = "BrenoOl1veira";
+
 export const navLinks = [
   {
     id: "about",
@@ -30,19 +25,15 @@ export const navLinks = [
     title: "Experience",
   },
   {
+    id: "works",
+    title: "Projects",
+  },
+  {
     id: "contact",
     title: "Contact",
   },
 ];
 
-/**
- * technologies
- * ----------------------------------------
- * Array com as tecnologias/habilidades do desenvolvedor.
- * Cada objeto contém:
- * - name: nome da tecnologia
- * - icon: caminho para o ícone da tecnologia (SVG ou imagem)
- */
 const technologies = [
   { name: "CSS 3", icon: css },
   { name: "JavaScript", icon: javascript },
@@ -54,18 +45,6 @@ const technologies = [
   { name: "HTML 5", icon: html },
 ];
 
-/**
- * experiences
- * ----------------------------------------
- * Array de experiências profissionais.
- * Cada experiência contém:
- * - title: cargo/função
- * - company_name: nome da empresa
- * - icon: ícone da empresa
- * - iconBg: cor de fundo do ícone
- * - date: período de atuação
- * - points: lista de responsabilidades e conquistas (em inglês)
- */
 const experiences = [
   {
     title: "System Analyst",
@@ -107,65 +86,74 @@ const experiences = [
   },
 ];
 
-/**
- * projects
- * ----------------------------------------
- * Array de projetos realizados.
- * Cada projeto contém:
- * - name: nome do projeto
- * - description: breve descrição do projeto (em inglês)
- * - tags: lista de tecnologias usadas, com cores para destaque visual
- * - image: imagem ou thumbnail do projeto
- * - source_code_link: link para o repositório do projeto
- */
-const projects = [
+export const projectOverrides = {
+  Agenda_De_Tarefas: {
+    image: project1,
+    tags: ["C#", "HTML", "CSS", ".NET5", "SQL"],
+  },
+  "XAUS-BACKEND": {
+    image: project2,
+    tags: ["Java", "Spring Boot", "JPA", "PostgreSQL"],
+  },
+  BrenoPortfolio: {
+    image: project3,
+    tags: ["HTML", "CSS", "JavaScript"],
+  },
+  "CRUD-API-": {
+    image: project3,
+    tags: ["C#", ".NET"],
+  },
+};
+
+export const projectFallbacks = [
   {
     name: "Task Scheduler",
     description: "Application developed to schedule tasks to be performed.",
-    tags: [
-      { name: "C#", color: "blue-text-gradient" },
-      { name: "HTML", color: "green-text-gradient" },
-      { name: "CSS", color: "pink-text-gradient" },
-      { name: ".NET5", color: "red-text-gradient" },
-      { name: "SQL", color: "orange" },
-    ],
+    tags: ["C#", "HTML", "CSS", ".NET5", "SQL"],
     image: project1,
     source_code_link: "https://github.com/BrenoOl1veira/Agenda_De_Tarefas",
+    homepage: "",
+    updated_at: "2024-01-01T00:00:00Z",
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "C#",
   },
   {
     name: "XAUS API",
     description: "API developed to perform CRUD operations for a sales application.",
-    tags: [
-      { name: "JAVA", color: "blue-text-gradient" },
-      { name: "SPRING BOOT", color: "green-text-gradient" },
-      { name: "JPA", color: "pink-text-gradient" },
-      { name: "POSTGRESQL", color: "red-text-gradient" },
-    ],
+    tags: ["Java", "Spring Boot", "JPA", "PostgreSQL"],
     image: project2,
     source_code_link: "https://github.com/BrenoOl1veira/XAUS-BACKEND",
+    homepage: "",
+    updated_at: "2024-01-01T00:00:00Z",
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "Java",
   },
   {
     name: "Portfolio",
     description: "Personal portfolio developed to showcase projects and skills.",
-    tags: [
-      { name: "HTML", color: "blue-text-gradient" },
-      { name: "CSS", color: "green-text-gradient" },
-      { name: "JavaScript", color: "pink-text-gradient" },
-    ],
+    tags: ["HTML", "CSS", "JavaScript"],
     image: project3,
     source_code_link: "https://github.com/BrenoOl1veira/BrenoPortfolio",
+    homepage: "",
+    updated_at: "2024-01-01T00:00:00Z",
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "JavaScript",
   },
   {
     name: "Service Orders API",
     description: "API developed to be consumed by the front-end application.",
-    tags: [
-      { name: "C#", color: "pink-text-gradient" },
-      { name: ".NET", color: "pink-text-gradient" },
-    ],
+    tags: ["C#", ".NET"],
     image: project3,
     source_code_link: "https://github.com/BrenoOl1veira/CRUD-API-",
+    homepage: "",
+    updated_at: "2024-01-01T00:00:00Z",
+    stargazers_count: 0,
+    forks_count: 0,
+    language: "C#",
   },
 ];
 
-// Exporta arrays para uso em outros componentes
-export { technologies, experiences, projects };
+export { technologies, experiences };
