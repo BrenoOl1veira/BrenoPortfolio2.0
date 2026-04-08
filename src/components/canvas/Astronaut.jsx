@@ -8,6 +8,7 @@ import {
   useGLTF,
   useProgress,
 } from "@react-three/drei";
+import { useMediaQuery } from "react-responsive";
 
 const CanvasLoader = () => {
   const { progress } = useProgress();
@@ -120,19 +121,21 @@ const Astronaut = () => {
 useGLTF.preload("/astronaut/scene.gltf");
 
 const AstronautCanvas = () => {
+  const isMobile = useMediaQuery({ maxWidth: 800 });
+
   return (
     <Canvas
-      dpr={[1, 1.3]}
+      dpr={isMobile ? [1, 1.1] : [1, 1.3]}
       gl={{
         alpha: true,
-        antialias: true,
+        antialias: !isMobile,
         powerPreference: "low-power",
       }}
       camera={{
-        fov: 30,
+        fov: isMobile ? 34 : 30,
         near: 0.1,
         far: 100,
-        position: [0, 0.8, 6],
+        position: isMobile ? [0, 0.7, 6.4] : [0, 0.8, 6],
       }}
       performance={{ min: 0.7 }}
       style={{
@@ -141,22 +144,34 @@ const AstronautCanvas = () => {
       }}
     >
       <Suspense fallback={<CanvasLoader />}>
-        <hemisphereLight intensity={0.8} groundColor="#0f172a" color="#dbeafe" />
-        <ambientLight intensity={0.55} />
-        <directionalLight position={[5, 7, 5]} intensity={1.45} color="#ffffff" />
-        <directionalLight position={[-5, 3, -5]} intensity={0.28} color="#4f8bff" />
+        <hemisphereLight
+          intensity={isMobile ? 0.65 : 0.8}
+          groundColor="#0f172a"
+          color="#dbeafe"
+        />
+        <ambientLight intensity={isMobile ? 0.45 : 0.55} />
+        <directionalLight
+          position={[5, 7, 5]}
+          intensity={isMobile ? 1.1 : 1.45}
+          color="#ffffff"
+        />
+        <directionalLight
+          position={[-5, 3, -5]}
+          intensity={isMobile ? 0.18 : 0.28}
+          color="#4f8bff"
+        />
         <spotLight
           position={[2, 4, 3]}
           angle={0.24}
           penumbra={0.5}
-          intensity={0.35}
+          intensity={isMobile ? 0.2 : 0.35}
           distance={16}
           decay={2}
           color="#ffeb99"
         />
-        <Environment preset="city" background={false} />
+        {!isMobile && <Environment preset="city" background={false} />}
 
-        <group position={[0, -2.25, 0]}>
+        <group position={isMobile ? [0, -2.15, 0] : [0, -2.25, 0]}>
           <Astronaut />
         </group>
       </Suspense>

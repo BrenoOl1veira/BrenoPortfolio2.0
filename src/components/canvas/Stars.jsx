@@ -2,11 +2,12 @@ import { useMemo, useRef, Suspense } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as random from "maath/random";
+import { useMediaQuery } from "react-responsive";
 
-const Stars = (props) => {
+const Stars = ({ count, ...props }) => {
   const ref = useRef();
   const sphere = useMemo(() => {
-    const points = new Float32Array(2600 * 3);
+    const points = new Float32Array(count * 3);
     const result = random.inSphere(points, { radius: 1.15 });
 
     for (let i = 0; i < result.length; i += 1) {
@@ -14,7 +15,7 @@ const Stars = (props) => {
     }
 
     return result;
-  }, []);
+  }, [count]);
 
   useFrame((_, delta) => {
     if (ref.current) {
@@ -38,19 +39,23 @@ const Stars = (props) => {
   );
 };
 
-const StarsCanvas = () => (
-  <div className="w-full h-auto absolute inset-0 z-[-1]">
-    <Canvas
-      dpr={[1, 1.25]}
-      gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
-      camera={{ position: [0, 0, 1] }}
-      performance={{ min: 0.7 }}
-    >
-      <Suspense fallback={null}>
-        <Stars />
-      </Suspense>
-    </Canvas>
-  </div>
-);
+const StarsCanvas = () => {
+  const isMobile = useMediaQuery({ maxWidth: 800 });
+
+  return (
+    <div className="w-full h-auto absolute inset-0 z-[-1]">
+      <Canvas
+        dpr={isMobile ? [1, 1.1] : [1, 1.25]}
+        gl={{ antialias: false, powerPreference: "low-power", alpha: true }}
+        camera={{ position: [0, 0, 1] }}
+        performance={{ min: 0.7 }}
+      >
+        <Suspense fallback={null}>
+          <Stars count={isMobile ? 1600 : 2600} />
+        </Suspense>
+      </Canvas>
+    </div>
+  );
+};
 
 export default StarsCanvas;

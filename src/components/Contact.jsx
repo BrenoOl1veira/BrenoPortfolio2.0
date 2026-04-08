@@ -70,10 +70,10 @@ const Contact = () => {
         variants={slideIn("right", "tween", 0.2, 1)}
         className="w-full relative z-10 overflow-hidden rounded-[28px] border border-white/5 bg-gradient-to-b from-[#0f172a] to-[#050816]"
         style={{
-          height: enhancedGraphics ? (isMobile ? "340px" : "560px") : "180px",
+          height: isMobile ? "340px" : enhancedGraphics ? "560px" : "460px",
         }}
       >
-        {enhancedGraphics && shouldRenderAstronaut ? (
+        {shouldRenderAstronaut ? (
           <Suspense fallback={null}>
             <AstronautCanvas />
           </Suspense>
@@ -90,7 +90,7 @@ const Contact = () => {
         variants={slideIn("left", "tween", 0.2, 1)}
         className="bg-black-100 p-8 rounded-2xl relative z-20"
         style={{
-          marginTop: enhancedGraphics ? (isMobile ? "-60px" : "-90px") : "0px",
+          marginTop: isMobile ? "-60px" : "-90px",
         }}
       >
         <p className={styles.sectionSubText}>{t.contact.subtitle}</p>
