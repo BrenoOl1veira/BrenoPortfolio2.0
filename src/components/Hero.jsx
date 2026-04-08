@@ -6,9 +6,9 @@ const Hero = () => {
   const { t } = useLanguage();
 
   return (
-    <section className="relative w-full h-screen mx-auto">
+    <section className="relative mx-auto flex min-h-[760px] w-full items-start justify-center pt-[112px] pb-16 sm:min-h-screen sm:items-center sm:pt-[120px]">
       <div
-        className={`absolute inset-0 top-[120px] max-w-7xl mx-auto ${styles.paddingX} flex flex-col items-center gap-6 text-center`}
+        className={`max-w-7xl mx-auto w-full ${styles.paddingX} flex flex-col items-center gap-6 text-center`}
       >
         <div className="max-w-3xl rounded-[28px] border border-white/10 bg-[#151030]/85 px-6 py-8 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:px-10">
           <p className="text-sm uppercase tracking-[0.35em] text-white/60">
