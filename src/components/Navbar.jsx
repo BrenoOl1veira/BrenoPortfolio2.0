@@ -5,7 +5,13 @@ import { styles } from "../styles";
 import { getNavLinks } from "../constants";
 import { logo, menu, close } from "../assets";
 import { useLanguage } from "../i18n/LanguageProvider";
+import { portfolioConfig } from "../config/portfolio";
 
+/**
+ * Barra fixa de navegacao. Ela controla tres estados locais: link ativo,
+ * abertura do menu mobile e aparencia apos rolagem. Links e textos de idioma
+ * nao ficam escritos diretamente aqui; eles vem das constantes e do provider.
+ */
 const Navbar = () => {
   const [active, setActive] = useState("");
   const [toggle, setToggle] = useState(false);
@@ -14,6 +20,8 @@ const Navbar = () => {
   const navLinks = getNavLinks(t);
 
   useEffect(() => {
+    // Depois de rolar, o fundo semitransparente melhora a leitura dos links
+    // sobre qualquer imagem ou animacao que esteja atras da barra.
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
@@ -42,7 +50,7 @@ const Navbar = () => {
           <img src={logo} alt="logo" className="w-9 h-9 object-contain" />
           <div className="flex flex-col">
             <p className="text-white text-[18px] font-bold cursor-pointer flex tracking-wide">
-              Breno Oliveira
+              {portfolioConfig.ownerName}
             </p>
             <span className="hidden sm:block text-[11px] uppercase tracking-[0.2em] text-white/45">
               {t.navbar.role}
@@ -84,7 +92,7 @@ const Navbar = () => {
 
           <div className="flex flex-row items-center gap-4">
             <a
-              href="https://www.linkedin.com/in/brenool1veira/"
+              href={portfolioConfig.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.hero.linkedinLabel}
@@ -93,7 +101,7 @@ const Navbar = () => {
               <FiLinkedin className="text-2xl" />
             </a>
             <a
-              href="https://github.com/BrenoOl1veira"
+              href={portfolioConfig.social.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.hero.githubLabel}
@@ -113,12 +121,15 @@ const Navbar = () => {
             {locale === "pt-BR" ? "EN-US" : "PT-BR"}
           </button>
 
-          <img
-            src={toggle ? close : menu}
-            alt="menu"
-            className="w-[28px] h-[28px] object-contain cursor-pointer"
-            onClick={() => setToggle(!toggle)}
-          />
+          <button
+            type="button"
+            aria-label={toggle ? "Close menu" : "Open menu"}
+            aria-expanded={toggle}
+            onClick={() => setToggle((isOpen) => !isOpen)}
+            className="flex h-8 w-8 items-center justify-center"
+          >
+            <img src={toggle ? close : menu} alt="" className="h-7 w-7 object-contain" />
+          </button>
 
           <div
             className={`${

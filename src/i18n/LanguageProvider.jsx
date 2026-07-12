@@ -4,6 +4,11 @@ import { defaultLocale, translations } from "./translations";
 const STORAGE_KEY = "portfolio-language";
 const LanguageContext = createContext(null);
 
+/**
+ * Escolhe o idioma inicial. Primeiro respeita a escolha salva no navegador;
+ * se nao houver escolha, usa portugues para navegador configurado em pt-BR e
+ * ingles como alternativa. Esta regra pode ser alterada sem mexer nas telas.
+ */
 const getInitialLocale = () => {
   if (typeof window === "undefined") return defaultLocale;
 
@@ -33,6 +38,11 @@ export const LanguageProvider = ({ children }) => {
   return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
 };
 
+/**
+ * Hook usado pelos componentes para obter idioma, funcao de troca e textos.
+ * O erro fora do provider e proposital: ele avisa o desenvolvedor que esqueceu
+ * de envolver o componente com LanguageProvider em main.jsx.
+ */
 export const useLanguage = () => {
   const context = useContext(LanguageContext);
 

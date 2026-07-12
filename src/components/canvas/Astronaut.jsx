@@ -10,6 +10,7 @@ import {
 } from "@react-three/drei";
 import { useMediaQuery } from "react-responsive";
 
+/** Mostra a porcentagem de carregamento do modelo 3D sem bloquear o formulario. */
 const CanvasLoader = () => {
   const { progress } = useProgress();
   return (
@@ -38,11 +39,18 @@ const CanvasLoader = () => {
   );
 };
 
+/**
+ * Carrega o arquivo 3D glTF da pasta public/astronaut e ajusta seus materiais
+ * para combinar com as cores do portfolio. Nao edite o arquivo do modelo aqui;
+ * para trocar o modelo, atualize o caminho e reveja os nomes usados abaixo.
+ */
 const Astronaut = () => {
   const group = useRef();
   const { scene, animations } = useGLTF("/astronaut/scene.gltf");
   const { actions } = useAnimations(animations, group);
 
+  // Os materiais sao identificados pelo nome de cada parte do modelo. Isso
+  // preserva o arquivo original, mas exige revisar esta lista ao trocar o glTF.
   useEffect(() => {
     if (!scene) return;
 
@@ -94,6 +102,8 @@ const Astronaut = () => {
     });
   }, [scene]);
 
+  // O nome da animacao nao e garantido pelo arquivo original. Por isso, usa-se
+  // a primeira animacao disponivel como movimento continuo de repouso.
   useEffect(() => {
     const actionKeys = Object.keys(actions || {});
     if (actionKeys.length === 0) return;
@@ -120,6 +130,7 @@ const Astronaut = () => {
 
 useGLTF.preload("/astronaut/scene.gltf");
 
+/** Configuracao responsiva do canvas que enfeita visualmente a secao de contato. */
 const AstronautCanvas = () => {
   const isMobile = useMediaQuery({ maxWidth: 800 });
 

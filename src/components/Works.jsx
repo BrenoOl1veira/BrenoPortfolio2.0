@@ -6,39 +6,18 @@ import { styles } from "../styles";
 import { github } from "../assets";
 import { SectionWrapper } from "../hoc";
 import {
-  githubUsername,
   getProjectFallbacks,
-  projectOverrides,
 } from "../constants";
 import { fadeIn, textVariant } from "../utils/motion";
 import { useLanguage } from "../i18n/LanguageProvider";
+import { portfolioConfig } from "../config/portfolio";
+import { getGitHubProjects } from "../services/github";
 
+// Mantem a pagina inicial objetiva, mas permite acessar todos os projetos sem
+// sair do portfolio.
 const FEATURED_PROJECTS_LIMIT = 3;
-const tagColorPalette = [
-  "blue-text-gradient",
-  "green-text-gradient",
-  "pink-text-gradient",
-  "red-text-gradient",
-];
-
-const formatRepoName = (repoName) =>
-  repoName
-    .replace(/[-_]+/g, " ")
-    .replace(/\b\w/g, (char) => char.toUpperCase());
-
-const getTagColor = (index) => tagColorPalette[index % tagColorPalette.length];
-
-const getProjectScore = (repo) => {
-  const updatedAt = new Date(repo.updated_at).getTime();
-  const recentBoost = Number.isFinite(updatedAt) ? updatedAt / 100000000000 : 0;
-
-  return (
-    (repo.stargazers_count || 0) * 10 +
-    (repo.forks_count || 0) * 6 +
-    recentBoost
-  );
-};
-
+// React.memo evita recalcular os cards com efeito 3D quando apenas outro estado
+// da secao (como abrir "ver mais") muda.
 const ProjectCard = React.memo(
   ({
     index,
@@ -157,6 +136,10 @@ const ProjectCard = React.memo(
   }
 );
 
+/**
+ * Busca projetos no GitHub e mostra os itens cadastrados localmente se a rede
+ * falhar. As regras da API e a conversao dos dados ficam em services/github.js.
+ */
 const Works = () => {
   const { locale, t } = useLanguage();
   const [projects, setProjects] = useState(getProjectFallbacks(locale));
@@ -169,56 +152,16 @@ const Works = () => {
   }, [locale]);
 
   useEffect(() => {
+    // Impede que uma resposta antiga da API atualize a tela depois de trocar o
+    // idioma ou sair desta secao, evitando avisos e informacoes inconsistentes.
     let ignore = false;
-
-    const normalizeTags = (repo, override) => {
-      const overrideTags = override?.tags || [];
-      const derivedTags = [repo.language, t.works.sourceTag].filter(Boolean);
-      const merged = [...overrideTags, ...derivedTags];
-
-      return [...new Set(merged)].slice(0, 5).map((tag, index) => ({
-        name: tag,
-        color: getTagColor(index),
-      }));
-    };
-
-    const normalizeRepo = (repo) => {
-      const override = projectOverrides[repo.name];
-
-      return {
-        name: formatRepoName(repo.name),
-        description: repo.description || t.works.fallbackDescription,
-        tags: normalizeTags(repo, override),
-        image: override?.image || "",
-        source_code_link: repo.html_url,
-        homepage: repo.homepage || "",
-        updated_at: repo.updated_at,
-        stargazers_count: repo.stargazers_count || 0,
-        forks_count: repo.forks_count || 0,
-        score: getProjectScore(repo),
-      };
-    };
 
     const loadProjects = async () => {
       try {
-        const response = await fetch(
-          `https://api.github.com/users/${githubUsername}/repos?per_page=100&sort=updated`,
-          {
-            headers: {
-              Accept: "application/vnd.github+json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`GitHub API returned ${response.status}`);
-        }
-
-        const repositories = await response.json();
-        const normalizedProjects = repositories
-          .filter((repo) => !repo.fork)
-          .map(normalizeRepo)
-          .sort((a, b) => b.score - a.score);
+        const normalizedProjects = await getGitHubProjects({
+          fallbackDescription: t.works.fallbackDescription,
+          sourceTag: t.works.sourceTag,
+        });
 
         if (!ignore && normalizedProjects.length > 0) {
           setProjects(normalizedProjects);
@@ -272,7 +215,7 @@ const Works = () => {
 
       <div className="mt-6 flex justify-center">
         <a
-          href={`https://github.com/${githubUsername}?tab=repositories`}
+          href={`${portfolioConfig.social.github}?tab=repositories`}
           target="_blank"
           rel="noopener noreferrer"
           className="rounded-full border border-white/15 px-5 py-2 text-sm font-semibold text-white transition-colors hover:border-white/40 hover:bg-white/5"

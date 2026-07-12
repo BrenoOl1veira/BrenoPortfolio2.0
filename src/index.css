@@ -4,6 +4,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base global. Para estilo de uma parte especifica, prefira classes Tailwind no
+   componente correspondente em vez de adicionar regra global aqui. */
 * {
   margin: 0;
   padding: 0;
@@ -13,6 +15,7 @@
   color-scheme: dark;
 }
 
+/* Compensa a altura da barra fixa quando um link leva diretamente a uma secao. */
 .hash-span {
   margin-top: -100px;
   padding-bottom: 100px;

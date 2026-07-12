@@ -3,6 +3,11 @@ import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { staggerContainer } from "../utils/motion";
 
+/**
+ * Envolve cada secao principal com espaco padrao, animacao ao aparecer e uma
+ * ancora que considera a barra fixa. O idName deve ser igual ao id dos links
+ * criados em constants/index.js para a navegacao por clique funcionar.
+ */
 const StarWrapper = (Component, idName) =>
   function HOC() {
     return (

@@ -4,6 +4,7 @@ import { Points, PointMaterial } from "@react-three/drei";
 import * as random from "maath/random";
 import { useMediaQuery } from "react-responsive";
 
+/** Fundo decorativo sem interacao. Em celular ha menos pontos para economizar recursos. */
 const Stars = ({ count, ...props }) => {
   const ref = useRef();
   const sphere = useMemo(() => {
@@ -39,6 +40,7 @@ const Stars = ({ count, ...props }) => {
   );
 };
 
+/** Container separado para permitir que App carregue todas as dependencias 3D sob demanda. */
 const StarsCanvas = () => {
   const isMobile = useMediaQuery({ maxWidth: 800 });
 

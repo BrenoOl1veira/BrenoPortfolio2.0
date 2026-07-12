@@ -10,6 +10,7 @@ import { useLanguage } from "../i18n/LanguageProvider";
 
 import "react-vertical-timeline-component/style.min.css";
 
+/** Cada card recebe uma experiencia ja traduzida e apenas cuida de apresenta-la. */
 const ExperienceCard = ({ experience }) => {
   return (
     <VerticalTimelineElement
@@ -56,6 +57,10 @@ const ExperienceCard = ({ experience }) => {
   );
 };
 
+/**
+ * Linha do tempo profissional. Os cargos e descricoes ficam em constants para
+ * que seja possivel atualiza-los sem alterar a biblioteca visual da timeline.
+ */
 const Experience = () => {
   const { locale, t } = useLanguage();
   const experiences = getExperiences(locale);

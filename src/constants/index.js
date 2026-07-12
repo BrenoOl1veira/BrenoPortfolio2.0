@@ -11,14 +11,25 @@ import {
   project1,
   project2,
   project3,
+  advpl,
+  tlpp,
+  oracle,
+  mongodb,
+  totvs,
 } from "../assets";
 
-export const githubUsername = "BrenoOl1veira";
-
+// Este arquivo guarda somente conteudo. Comportamento visual fica em components
+// e chamadas externas ficam em services, tornando atualizacoes mais seguras.
 export const technologies = [
   { name: "SQL", icon: sql },
+  { name: "Oracle", icon: oracle },
+  { name: "MongoDB", icon: mongodb },
   { name: "Python", icon: python },
   { name: "C#", icon: sharp },
+  { name: "ADVPL", icon: advpl },
+  { name: "TLPP", icon: tlpp },
+  { name: "TOTVS RM", icon: totvs },
+  { name: "TOTVS Protheus", icon: totvs },
   { name: "React JS", icon: reactjs },
   { name: "JavaScript", icon: javascript },
   { name: "Git", icon: git },
@@ -26,6 +37,7 @@ export const technologies = [
   { name: "CSS 3", icon: css },
 ];
 
+/** Cria links localizados para as secoes que recebem id por SectionWrapper. */
 export const getNavLinks = (t) => [
   { id: "about", title: t.nav.about },
   { id: "work", title: t.nav.work },
@@ -33,6 +45,7 @@ export const getNavLinks = (t) => [
   { id: "contact", title: t.nav.contact },
 ];
 
+/** Retorna experiencias no idioma ativo sem misturar texto com codigo visual. */
 export const getExperiences = (locale) => {
   if (locale === "pt-BR") {
     return [
@@ -99,6 +112,8 @@ export const getExperiences = (locale) => {
   ];
 };
 
+// As chaves sao os nomes exatos dos repositorios no GitHub. Adicione uma entrada
+// para definir imagem e tags quando os dados da API nao forem suficientes.
 export const projectOverrides = {
   Agenda_De_Tarefas: {
     image: project1,
@@ -118,6 +133,7 @@ export const projectOverrides = {
   },
 };
 
+/** Projetos de reserva usados sem internet ou quando a API do GitHub falhar. */
 export const getProjectFallbacks = (locale) => {
   if (locale === "pt-BR") {
     return [

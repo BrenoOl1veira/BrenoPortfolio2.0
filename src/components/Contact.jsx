@@ -8,13 +8,16 @@ import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
 import { useElementVisibility, useEnhancedGraphics } from "../utils/performance";
 import { useLanguage } from "../i18n/LanguageProvider";
+import { hasEmailJsConfiguration, portfolioConfig } from "../config/portfolio";
 
+// A cena 3D e apenas um complemento visual; o formulario continua disponivel
+// mesmo que o navegador nao consiga carregar WebGL.
 const AstronautCanvas = lazy(() => import("./canvas/Astronaut"));
 
-const SERVICE_ID = "YOUR_SERVICE_ID";
-const TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const PUBLIC_KEY = "YOUR_PUBLIC_KEY";
-
+/**
+ * Formulario de contato. Com EmailJS configurado, envia a mensagem pelo servico;
+ * sem configuracao, abre o aplicativo de e-mail com a mensagem preenchida.
+ */
 const Contact = () => {
   const formRef = useRef();
   const [loading, setLoading] = useState(false);
@@ -22,17 +25,18 @@ const Contact = () => {
   const enhancedGraphics = useEnhancedGraphics();
   const { t } = useLanguage();
   const sceneRef = useRef(null);
+  // Evita baixar e desenhar o modelo 3D antes de esta area estar proxima da tela.
   const shouldRenderAstronaut = useElementVisibility(sceneRef, {
     rootMargin: "220px 0px",
     threshold: 0.05,
   });
-  const emailConfigMissing = [SERVICE_ID, TEMPLATE_ID, PUBLIC_KEY].some((value) =>
-    value.startsWith("YOUR_")
-  );
+  const emailConfigMissing = !hasEmailJsConfiguration;
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // O rascunho mailto mantem um caminho de contato funcional em ambientes de
+    // teste ou publicacoes onde os identificadores publicos do EmailJS nao existem.
     if (emailConfigMissing) {
       const formData = new FormData(formRef.current);
       const name = formData.get("name") || "Hello";
@@ -43,13 +47,18 @@ const Contact = () => {
         `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       );
 
-      window.location.href = `mailto:brenooliveira.dev@gmail.com?subject=${subject}&body=${body}`;
+      window.location.href = `mailto:${portfolioConfig.email}?subject=${subject}&body=${body}`;
       return;
     }
 
     setLoading(true);
 
-    emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, formRef.current, PUBLIC_KEY).then(
+    emailjs.sendForm(
+      portfolioConfig.emailJs.serviceId,
+      portfolioConfig.emailJs.templateId,
+      formRef.current,
+      portfolioConfig.emailJs.publicKey
+    ).then(
       () => {
         setLoading(false);
         alert(t.contact.success);

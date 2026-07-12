@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 
+/**
+ * Decide com cautela se efeitos 3D podem ser usados. Verifica tamanho de tela,
+ * preferencia por menos movimento, memoria e economia de dados. Sao apenas
+ * indicios do navegador, portanto cada uso de WebGL tambem possui alternativa.
+ */
 const getEnhancedGraphicsSupport = () => {
   if (typeof window === "undefined") return false;
 
@@ -13,6 +18,7 @@ const getEnhancedGraphicsSupport = () => {
   return isDesktop && allowsMotion && hasEnoughMemory && !isSlowConnection;
 };
 
+/** Atualiza a decisao de graficos quando a largura da tela muda. */
 export const useEnhancedGraphics = () => {
   const [enhancedGraphics, setEnhancedGraphics] = useState(getEnhancedGraphicsSupport);
 
@@ -30,6 +36,7 @@ export const useEnhancedGraphics = () => {
   return enhancedGraphics;
 };
 
+/** Observa uma area para carregar conteudo pesado somente perto da visualizacao. */
 export const useElementVisibility = (elementRef, options = {}) => {
   const [isVisible, setIsVisible] = useState(false);
 

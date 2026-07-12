@@ -1,7 +1,12 @@
 import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 import { styles } from "../styles";
 import { useLanguage } from "../i18n/LanguageProvider";
+import { portfolioConfig } from "../config/portfolio";
 
+/**
+ * Primeira secao visivel do portfolio. Apresenta o profissional e conduz para
+ * as duas acoes principais: conhecer projetos ou iniciar um contato.
+ */
 const Hero = () => {
   const { t } = useLanguage();
 
@@ -16,7 +21,7 @@ const Hero = () => {
           </p>
 
           <h1 className={styles.heroHeadText}>
-            {t.hero.titlePrefix} <span className="text-[#3b82f6]">Breno Oliveira</span>
+            {t.hero.titlePrefix} <span className="text-[#3b82f6]">{portfolioConfig.ownerName}</span>
           </h1>
 
           <p className={`${styles.heroSubText} mt-4 text-white text-center text-lg`}>
@@ -44,7 +49,7 @@ const Hero = () => {
 
           <div className="mt-6 flex justify-center gap-5 text-2xl text-white">
             <a
-              href="https://www.linkedin.com/in/brenool1veira/"
+              href={portfolioConfig.social.linkedin}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.hero.linkedinLabel}
@@ -53,7 +58,7 @@ const Hero = () => {
               <FiLinkedin />
             </a>
             <a
-              href="https://github.com/BrenoOl1veira"
+              href={portfolioConfig.social.github}
               target="_blank"
               rel="noopener noreferrer"
               aria-label={t.hero.githubLabel}
@@ -62,7 +67,7 @@ const Hero = () => {
               <FiGithub />
             </a>
             <a
-              href="mailto:brenooliveira.dev@gmail.com"
+              href={`mailto:${portfolioConfig.email}`}
               aria-label={t.hero.emailLabel}
               className="transition-colors hover:text-[#60a5fa]"
             >

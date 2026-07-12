@@ -4,6 +4,11 @@ import { About, Contact, Experience, Hero, Navbar, Tech, Works } from "./compone
 
 const StarsCanvas = lazy(() => import("./components/canvas/Stars"));
 
+/**
+ * Monta a pagina principal na ordem em que as secoes aparecem ao visitante.
+ * StarsCanvas e carregado sob demanda porque e apenas decorativo e depende de
+ * WebGL; assim o conteudo principal nao espera a animacao 3D para aparecer.
+ */
 const App = () => {
   return (
     <BrowserRouter>

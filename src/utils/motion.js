@@ -1,3 +1,5 @@
+// Animacoes reutilizaveis do Framer Motion. Centraliza-las mantem a experiencia
+// consistente e evita repetir configuracoes em cada componente.
 export const textVariant = (delay) => {
     return {
       hidden: {

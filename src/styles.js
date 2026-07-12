@@ -1,3 +1,5 @@
+// Grupos reutilizaveis de classes Tailwind. Deixe aqui apenas espacamentos e
+// tipografias repetidos; estilo exclusivo de uma secao fica no componente dela.
 const styles = {
     paddingX: "sm:px-16 px-6",
     paddingY: "sm:py-16 py-6",

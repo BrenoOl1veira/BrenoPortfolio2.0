@@ -1,16 +1,6 @@
-const RESUME_REPO_API = "https://api.github.com/repos/BrenoOl1veira/resume-kit/contents";
-const RESUME_REF = "codex/resume-kit";
-
-const resumeConfig = {
-  "en-US": {
-    path: "resumes/en/resume.tex",
-    filename: "breno-oliveira-resume-en.pdf",
-  },
-  "pt-BR": {
-    path: "resumes/pt-br/curriculo.tex",
-    filename: "breno-oliveira-curriculo-pt-br.pdf",
-  },
-};
+// Este utilitario faz a ponte entre o repositorio do curriculo em LaTeX e o
+// servico que o transforma em PDF. Os caminhos editaveis ficam em portfolioConfig.
+import { portfolioConfig } from "../config/portfolio";
 
 const decodeGitHubContent = (content) => {
   const cleanContent = content.replace(/\n/g, "");
@@ -21,14 +11,19 @@ const decodeGitHubContent = (content) => {
 
 const sanitizeResumeTex = (tex) => tex.replace(/\\usepackage\{xurl\}\r?\n/g, "");
 
+/**
+ * Baixa o texto LaTeX do curriculo no idioma solicitado e monta uma URL de
+ * compilacao do PDF. Esta funcao nao baixa o PDF: ela devolve o endereco que
+ * sera aberto pelo navegador na funcao de clique do componente About.
+ */
 export const buildResumePdfUrl = async (locale) => {
-  const config = resumeConfig[locale];
+  const config = portfolioConfig.resume.locales[locale];
   if (!config) {
     throw new Error(`Unsupported resume locale: ${locale}`);
   }
 
   const response = await fetch(
-    `${RESUME_REPO_API}/${config.path}?ref=${encodeURIComponent(RESUME_REF)}`,
+    `${portfolioConfig.resume.repositoryApi}/${config.path}?ref=${encodeURIComponent(portfolioConfig.resume.branch)}`,
     {
       headers: {
         Accept: "application/vnd.github+json",

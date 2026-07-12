@@ -5,8 +5,14 @@ import { styles } from "../styles";
 import { useEnhancedGraphics } from "../utils/performance";
 import { useLanguage } from "../i18n/LanguageProvider";
 
+// As esferas 3D sao um efeito opcional. Em celular, economia de bateria ou
+// hardware limitado, o icone simples aparece no lugar para preservar velocidade.
 const BallCanvas = lazy(() => import("./canvas/Ball"));
 
+/**
+ * Mostra as tecnologias cadastradas em constants/index.js. Para adicionar uma
+ * habilidade, inclua o icone nos assets e um item na lista technologies.
+ */
 const Tech = () => {
   const enhancedGraphics = useEnhancedGraphics();
   const { t } = useLanguage();
