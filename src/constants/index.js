@@ -17,9 +17,41 @@ import {
   mongodb,
   totvs,
 } from "../assets";
+import { portfolioConfig } from "../config/portfolio";
 
 // Este arquivo guarda somente conteudo. Comportamento visual fica em components
 // e chamadas externas ficam em services, tornando atualizacoes mais seguras.
+
+/**
+ * Icones 9x9 em pixel, desenhados linha a linha: "X" e pixel aceso e "." e
+ * vazio. Os cinco primeiros vem do hub; github e email foram criados aqui.
+ */
+export const pixelIcons = {
+  tiktok: [".....X...", ".....XX..", ".....X.X.", ".....X...", ".....X...", "..XXXX...", ".X...X...", ".X..X....", "..XX....."],
+  youtube: [".XXXXXXX.", "XXXXXXXXX", "XXX.XXXXX", "XXX..XXXX", "XXX...XXX", "XXX..XXXX", "XXX.XXXXX", "XXXXXXXXX", ".XXXXXXX."],
+  instagram: [".XXXXXXX.", "X......XX", "X..XXX..X", "X.X...X.X", "X.X...X.X", "X.X...X.X", "X..XXX..X", "X.......X", ".XXXXXXX."],
+  linkedin: ["XXXXXXXXX", "X.XXXXXXX", "XXXXXXXXX", "X.X....XX", "X.X.XX.XX", "X.X.XX.XX", "X.X.XX.XX", "XXXXXXXXX", "XXXXXXXXX"],
+  github: ["X.......X", "XX.....XX", "XXXXXXXXX", "XX..X..XX", "XX..X..XX", "XXXXXXXXX", ".XXXXXXX.", "..X.X.X..", ".X..X..X."],
+  email: [".........", "XXXXXXXXX", "XX.....XX", "X.X...X.X", "X..X.X..X", "X...X...X", "X.......X", "XXXXXXXXX", "........."],
+};
+
+/** Redes sociais na ordem de portfolioConfig.social, com o e-mail no fim. */
+export const socialLinks = [
+  ...Object.entries(portfolioConfig.social).map(([key, { handle, url }]) => ({
+    key,
+    name: { tiktok: "TikTok", youtube: "YouTube", instagram: "Instagram", linkedin: "LinkedIn", github: "GitHub" }[key],
+    handle,
+    url,
+    icon: pixelIcons[key],
+  })),
+  {
+    key: "email",
+    name: "E-mail",
+    handle: portfolioConfig.email,
+    url: `mailto:${portfolioConfig.email}`,
+    icon: pixelIcons.email,
+  },
+];
 export const technologies = [
   { name: "SQL", icon: sql },
   { name: "Oracle", icon: oracle },
@@ -40,6 +72,7 @@ export const technologies = [
 /** Cria links localizados para as secoes que recebem id por SectionWrapper. */
 export const getNavLinks = (t) => [
   { id: "about", title: t.nav.about },
+  { id: "tech", title: t.nav.tech },
   { id: "work", title: t.nav.work },
   { id: "works", title: t.nav.works },
   { id: "contact", title: t.nav.contact },

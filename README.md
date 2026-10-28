@@ -1,10 +1,12 @@
 # Portfolio - Breno Oliveira
 
-Portfolio pessoal construído com React, Vite, Tailwind CSS, Framer Motion e React Three Fiber. O site apresenta perfil profissional, tecnologias, experiência, projetos públicos do GitHub e um formulário de contato.
+Portfolio pessoal construído com React, Vite e Tailwind CSS. O site apresenta perfil profissional, redes sociais, tecnologias, experiência, projetos públicos do GitHub, um terminal interativo e um formulário de contato.
+
+O visual segue o hub [obrenin-hub](https://github.com/BrenoOl1veira/obrenin-hub): fundo escuro com grade de pontos, acento laranja, fonte em pixel (Silkscreen), sombras deslocadas e o bichinho em pixel andando no topo. Os tokens de cor ficam em `tailwind.config.js` e em `:root` no `src/index.css`.
 
 ## Requisitos
 
-- Node.js 18 ou superior
+- Node.js 20.19+ ou 22.12+ (exigido pelo Vite 8)
 - npm 9 ou superior
 
 ## Executar localmente
@@ -27,14 +29,18 @@ npm run preview
 ```text
 src/
   assets/       Imagens, ícones e arquivos estáticos importados pelo React
-  components/   Seções visuais da página e componentes de canvas 3D
-  config/       Dados públicos do proprietário e configurações de integração
-  constants/    Conteúdo estático do portfólio (tecnologias, experiência e fallbacks)
-  hoc/          Wrapper compartilhado que cria âncoras e animações das seções
+  components/   Seções visuais da página, bichinho (Critter), terminal e ícones em pixel
+  config/       Dados públicos do proprietário, redes sociais e integrações
+  constants/    Conteúdo estático (tecnologias, experiência, ícones em pixel e fallbacks)
+  hoc/          Wrapper compartilhado que cria as âncoras das seções
   i18n/         Provider de idioma e textos em inglês/português
   services/     Acesso e adaptação de respostas de serviços externos
-  utils/        Utilitários reutilizáveis para animação, desempenho e currículo
+  utils/        Utilitário do currículo
 ```
+
+### Redes sociais
+
+As redes (TikTok, YouTube, Instagram, LinkedIn, GitHub) ficam em `portfolioConfig.social`, e o e-mail em `portfolioConfig.email`. Elas aparecem na seção "Me segue", no rodapé e no comando `links` do terminal. Para adicionar uma rede, inclua-a em `social` e desenhe um ícone 9x9 com a mesma chave em `pixelIcons` (`src/constants/index.js`).
 
 ## Pontos de manutenção
 

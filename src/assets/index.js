@@ -1,9 +1,6 @@
 // Ponto unico de importacao dos arquivos estaticos. Componentes importam daqui,
 // evitando caminhos longos e facilitando trocar uma imagem depois.
 import logo from "./logo.svg";
-import github from "./github.png";
-import menu from "./menu.svg";
-import close from "./close.svg";
 
 import css from "./tech/css.svg";
 import git from "./tech/git.png";
@@ -32,9 +29,6 @@ import logohero from "./profile.jpg";
 
 export {
   logo,
-  github,
-  menu,
-  close,
   css,
   git,
   html,

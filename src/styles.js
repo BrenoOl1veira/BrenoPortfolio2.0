@@ -1,19 +1,10 @@
-// Grupos reutilizaveis de classes Tailwind. Deixe aqui apenas espacamentos e
-// tipografias repetidos; estilo exclusivo de uma secao fica no componente dela.
+// Grupos reutilizaveis de classes Tailwind. Deixe aqui apenas larguras e
+// espacamentos repetidos; estilo exclusivo de uma secao fica no componente dela.
+// Os blocos visuais (botao, painel, linha clicavel) ficam em index.css.
 const styles = {
-    paddingX: "sm:px-16 px-6",
-    paddingY: "sm:py-16 py-6",
-    padding: "sm:px-16 px-6 sm:py-16 py-10",
-  
-    heroHeadText:
-      "font-black text-white lg:text-[72px] sm:text-[60px] xs:text-[50px] text-[40px] lg:leading-[98px] mt-2",
-    heroSubText:
-      "text-[#dfd9ff] font-medium lg:text-[30px] sm:text-[26px] xs:text-[20px] text-[16px] lg:leading-[40px]",
-  
-    sectionHeadText:
-      "text-white font-black md:text-[60px] sm:text-[50px] xs:text-[40px] text-[30px]",
-    sectionSubText:
-      "sm:text-[18px] text-[14px] text-secondary uppercase tracking-wider",
-  };
-  
-  export { styles };
+  // Coluna unica e central, como no hub, so que mais larga para caber projetos.
+  wrap: "mx-auto w-full max-w-[960px] px-4 sm:px-6",
+  sectionGap: "pt-[72px] sm:pt-24",
+};
+
+export { styles };
