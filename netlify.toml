@@ -1,0 +1,9 @@
+# Configuracao de build do Netlify versionada junto com o codigo.
+# O Vite 8 exige Node 20.19+ ou 22.12+; sem isto o Netlify usa a versao de
+# Node fixada quando o site foi criado e o build falha.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
