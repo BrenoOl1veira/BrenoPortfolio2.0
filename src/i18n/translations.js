@@ -21,7 +21,6 @@ export const translations = {
     },
     navbar: {
       role: "Data Engineer | Data Analyst",
-      status: "Open to work",
     },
     hero: {
       role: "Data Engineer · TOTVS ERP Specialist",
@@ -178,7 +177,6 @@ export const translations = {
     },
     navbar: {
       role: "Engenheiro de Dados | Analista de Dados",
-      status: "Disponível",
     },
     hero: {
       role: "Engenheiro de Dados · Especialista ERP TOTVS",

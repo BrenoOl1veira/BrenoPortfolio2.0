@@ -5,8 +5,8 @@ import { useLanguage } from "../i18n/LanguageProvider";
 import { portfolioConfig } from "../config/portfolio";
 
 /**
- * Barra fixa no topo, inspirada no cabecalho do hub: nome a esquerda, status
- * piscando e seletor de idioma a direita. Os links das secoes ficam numa linha
+ * Barra fixa no topo, inspirada no cabecalho do hub: nome a esquerda e
+ * seletor de idioma a direita. Os links das secoes ficam numa linha
  * propria no celular para nao precisar de menu hamburguer.
  */
 const Navbar = () => {
@@ -53,12 +53,7 @@ const Navbar = () => {
           </ul>
         </nav>
 
-        <div className="flex items-center gap-4">
-          <span className="px-text hidden items-center gap-2 text-[12px] text-muted sm:flex">
-            <i className="blink block h-2 w-2 bg-accent" aria-hidden="true" />
-            {t.navbar.status}
-          </span>
-
+        <div className="flex items-center">
           <div role="group" aria-label={t.nav.language} className="flex border-2 border-line">
             {["pt-BR", "en-US"].map((language) => (
               <button
