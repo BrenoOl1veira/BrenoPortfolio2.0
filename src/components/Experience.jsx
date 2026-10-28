@@ -1,65 +1,51 @@
-import React from "react";
-import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
-import { motion } from "framer-motion";
-
-import { styles } from "../styles";
 import { getExperiences } from "../constants";
 import { SectionWrapper } from "../hoc";
-import { textVariant } from "../utils/motion";
 import { useLanguage } from "../i18n/LanguageProvider";
-
-import "react-vertical-timeline-component/style.min.css";
+import SectionHeading from "./SectionHeading";
 
 /** Cada card recebe uma experiencia ja traduzida e apenas cuida de apresenta-la. */
-const ExperienceCard = ({ experience }) => {
-  return (
-    <VerticalTimelineElement
-      contentStyle={{
-        background: "#1d1836",
-        color: "#fff",
-      }}
-      contentArrowStyle={{ borderRight: "7px solid #232631" }}
-      date={experience.date}
-      iconStyle={{ background: experience.iconBg }}
-      icon={
-        <div className="flex justify-center items-center w-full h-full">
-          <img
-            src={experience.icon}
-            alt={experience.company_name}
-            className="w-[60%] h-[60%] object-contain"
-          />
-        </div>
-      }
-    >
-      <div>
-        <h3 className="text-white text-lg sm:text-xl md:text-2xl font-bold leading-tight">
-          {experience.title}
-        </h3>
-        <p
-          className="text-secondary text-sm sm:text-base font-semibold"
-          style={{ margin: 0 }}
-        >
-          {experience.company_name}
-        </p>
+const ExperienceCard = ({ experience }) => (
+  <li className="relative pl-8 sm:pl-10">
+    {/* Marcador quadrado sobre a linha vertical da timeline. */}
+    <span className="absolute left-[-7px] top-1 block h-3 w-3 bg-accent" aria-hidden="true" />
+
+    <article className="panel">
+      <div className="panel-bar">
+        <span />
+        <span />
+        <span />
+        <b>{experience.date}</b>
       </div>
 
-      <ul className="mt-4 list-disc ml-5 space-y-2">
-        {experience.points.map((point, index) => (
-          <li
-            key={`experience-point-${index}`}
-            className="text-white-100 text-[13px] sm:text-[14px] pl-1 tracking-wide"
-          >
-            {point}
-          </li>
-        ))}
-      </ul>
-    </VerticalTimelineElement>
-  );
-};
+      <div className="p-4 sm:p-6">
+        <div className="flex items-center gap-4">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center" style={{ background: experience.iconBg }}>
+            <img src={experience.icon} alt={experience.company_name} className="h-[70%] w-[70%] object-contain" />
+          </div>
+          <div className="min-w-0">
+            <h3 className="px-text m-0 text-[18px] leading-tight sm:text-[22px]">{experience.title}</h3>
+            <p className="px-text m-0 mt-1 text-[12px] text-soft">{experience.company_name}</p>
+          </div>
+        </div>
+
+        <ul className="m-0 mt-5 flex list-none flex-col gap-3 p-0">
+          {experience.points.map((point, index) => (
+            <li key={`experience-point-${index}`} className="flex gap-3 text-[14px] leading-6 text-fg/90">
+              <span className="text-accent" aria-hidden="true">
+                ▸
+              </span>
+              <span>{point}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </article>
+  </li>
+);
 
 /**
  * Linha do tempo profissional. Os cargos e descricoes ficam em constants para
- * que seja possivel atualiza-los sem alterar a biblioteca visual da timeline.
+ * que seja possivel atualiza-los sem alterar a apresentacao.
  */
 const Experience = () => {
   const { locale, t } = useLanguage();
@@ -67,26 +53,13 @@ const Experience = () => {
 
   return (
     <>
-      <motion.div variants={textVariant()} className="px-4 sm:px-6 md:px-0">
-        <p
-          className={`${styles.sectionSubText} text-center text-xs sm:text-sm md:text-base`}
-        >
-          {t.experience.subtitle}
-        </p>
-        <h2
-          className={`${styles.sectionHeadText} text-center text-xl sm:text-3xl md:text-4xl font-bold`}
-        >
-          {t.experience.title}
-        </h2>
-      </motion.div>
+      <SectionHeading id="work-title" title={t.experience.title} hint={t.experience.subtitle} />
 
-      <div className="mt-10 sm:mt-16 md:mt-20 flex flex-col">
-        <VerticalTimeline>
-          {experiences.map((experience, index) => (
-            <ExperienceCard key={`experience-${index}`} experience={experience} />
-          ))}
-        </VerticalTimeline>
-      </div>
+      <ol className="m-0 flex list-none flex-col gap-10 border-l-2 border-dashed border-line p-0">
+        {experiences.map((experience, index) => (
+          <ExperienceCard key={`experience-${index}`} experience={experience} />
+        ))}
+      </ol>
     </>
   );
 };

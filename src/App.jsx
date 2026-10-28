@@ -1,36 +1,29 @@
-import { BrowserRouter } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { About, Contact, Experience, Hero, Navbar, Tech, Works } from "./components";
-
-const StarsCanvas = lazy(() => import("./components/canvas/Stars"));
+import { About, Contact, Experience, Footer, Hero, Navbar, Socials, Tech, Terminal, Works } from "./components";
 
 /**
  * Monta a pagina principal na ordem em que as secoes aparecem ao visitante.
- * StarsCanvas e carregado sob demanda porque e apenas decorativo e depende de
- * WebGL; assim o conteudo principal nao espera a animacao 3D para aparecer.
+ * O visual segue o hub obrenin.dev: uma coluna central, fonte em pixel e
+ * nenhum efeito 3D, o que deixa o site leve tambem no celular.
  */
 const App = () => {
   return (
-    <BrowserRouter>
-      <div className="relative z-0 bg-primary overflow-x-hidden">
-        <Navbar />
+    // overflow-x-clip (e nao hidden) para nao quebrar o "sticky" da barra do topo.
+    <div id="top" className="overflow-x-clip">
+      <Navbar />
 
-        <section className="relative z-0 bg-hero-pattern bg-cover bg-no-repeat bg-center">
-          <Hero />
-          <Suspense fallback={null}>
-            <StarsCanvas />
-          </Suspense>
-        </section>
+      <main>
+        <Hero />
+        <Socials />
+        <About />
+        <Tech />
+        <Experience />
+        <Works />
+        <Terminal />
+        <Contact />
+      </main>
 
-        <main className="relative z-10">
-          <About />
-          <Tech />
-          <Experience />
-          <Works />
-          <Contact />
-        </main>
-      </div>
-    </BrowserRouter>
+      <Footer />
+    </div>
   );
 };
 

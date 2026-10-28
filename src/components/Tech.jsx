@@ -1,70 +1,32 @@
-import React, { lazy, Suspense } from "react";
 import { SectionWrapper } from "../hoc";
 import { technologies } from "../constants";
-import { styles } from "../styles";
-import { useEnhancedGraphics } from "../utils/performance";
 import { useLanguage } from "../i18n/LanguageProvider";
-
-// As esferas 3D sao um efeito opcional. Em celular, economia de bateria ou
-// hardware limitado, o icone simples aparece no lugar para preservar velocidade.
-const BallCanvas = lazy(() => import("./canvas/Ball"));
+import SectionHeading from "./SectionHeading";
 
 /**
- * Mostra as tecnologias cadastradas em constants/index.js. Para adicionar uma
- * habilidade, inclua o icone nos assets e um item na lista technologies.
+ * Mostra as tecnologias cadastradas em constants/index.js como blocos com
+ * borda grossa. Para adicionar uma habilidade, inclua o icone nos assets e um
+ * item na lista technologies.
  */
 const Tech = () => {
-  const enhancedGraphics = useEnhancedGraphics();
   const { t } = useLanguage();
 
   return (
-    <section className="w-full text-center">
-      <div className="mb-10">
-        <p className={`${styles.sectionSubText} text-center`}>
-          {t.tech.subtitle}
-        </p>
+    <>
+      <SectionHeading id="tech-title" title={t.tech.title} hint={t.tech.subtitle} />
 
-        <h2 className={`${styles.sectionHeadText} text-center`}>{t.tech.title}</h2>
-      </div>
-
-      <div className="flex flex-row flex-wrap justify-center gap-10 max-w-5xl mx-auto">
+      <ul className="m-0 grid list-none grid-cols-2 gap-3 p-0 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
         {technologies.map((technology) => (
-          <div
+          <li
             key={technology.name}
-            className="flex flex-col items-center justify-center w-28 h-28"
+            className="flex flex-col items-center gap-3 border-2 border-line bg-panel px-2 py-4 text-center transition-transform duration-100 hover:-translate-x-0.5 hover:-translate-y-0.5 hover:border-accent hover:shadow-px"
           >
-            {enhancedGraphics ? (
-              <Suspense
-                fallback={
-                  <img
-                    src={technology.icon}
-                    alt={`${technology.name} icon`}
-                    className="h-20 w-20 object-contain"
-                    loading="lazy"
-                  />
-                }
-              >
-                <BallCanvas icon={technology.icon} />
-              </Suspense>
-            ) : (
-              <img
-                src={technology.icon}
-                alt={`${technology.name} icon`}
-                className="h-20 w-20 object-contain"
-                loading="lazy"
-              />
-            )}
-
-            <p
-              className="text-sm text-white/80 mt-2 font-medium tracking-wide"
-              aria-label={`Technology: ${technology.name}`}
-            >
-              {technology.name}
-            </p>
-          </div>
+            <img src={technology.icon} alt="" className="h-11 w-11 object-contain" loading="lazy" />
+            <span className="px-text text-[11px] leading-tight">{technology.name}</span>
+          </li>
         ))}
-      </div>
-    </section>
+      </ul>
+    </>
   );
 };
 

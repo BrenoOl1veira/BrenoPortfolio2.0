@@ -8,13 +8,6 @@ import { projectOverrides } from "../constants";
  * arquivo busca os dados e os converte para o formato que a tela de projetos
  * entende. Caso a API mude, a manutencao fica concentrada aqui.
  */
-const TAG_COLOR_PALETTE = [
-  "blue-text-gradient",
-  "green-text-gradient",
-  "pink-text-gradient",
-  "red-text-gradient",
-];
-
 const formatRepositoryName = (repositoryName) =>
   repositoryName.replace(/[-_]+/g, " ").replace(/\b\w/g, (character) => character.toUpperCase());
 
@@ -28,13 +21,10 @@ const getProjectScore = ({ updated_at: updatedAt, stargazers_count: stars, forks
 /**
  * Converte um repositorio retornado pelo GitHub para o formato usado no card.
  * `fallbackDescription` e usada quando o repositorio nao possui descricao.
- * `sourceTag` identifica que aquela tecnologia veio da leitura da API.
  */
-const toProject = (repository, fallbackDescription, sourceTag) => {
+const toProject = (repository, fallbackDescription) => {
   const override = projectOverrides[repository.name];
-  const tags = [...new Set([...(override?.tags || []), repository.language, sourceTag].filter(Boolean))]
-    .slice(0, 5)
-    .map((name, index) => ({ name, color: TAG_COLOR_PALETTE[index % TAG_COLOR_PALETTE.length] }));
+  const tags = [...new Set([...(override?.tags || []), repository.language].filter(Boolean))].slice(0, 5);
 
   return {
     name: formatRepositoryName(repository.name),
@@ -55,7 +45,7 @@ const toProject = (repository, fallbackDescription, sourceTag) => {
  * mostrar primeiro os mais relevantes. A pontuacao considera estrelas, forks
  * e data de atualizacao; ela nao altera nenhum dado no GitHub.
  */
-export const getGitHubProjects = async ({ fallbackDescription, sourceTag }) => {
+export const getGitHubProjects = async ({ fallbackDescription }) => {
   const response = await fetch(
     `https://api.github.com/users/${portfolioConfig.githubUsername}/repos?per_page=100&sort=updated`,
     { headers: { Accept: "application/vnd.github+json" } }
@@ -66,6 +56,6 @@ export const getGitHubProjects = async ({ fallbackDescription, sourceTag }) => {
   const repositories = await response.json();
   return repositories
     .filter((repository) => !repository.fork)
-    .map((repository) => toProject(repository, fallbackDescription, sourceTag))
+    .map((repository) => toProject(repository, fallbackDescription))
     .sort((first, second) => second.score - first.score);
 };
