@@ -22,13 +22,12 @@ export const portfolioConfig = {
     linkedin: { handle: "in/brenool1veira", url: "https://www.linkedin.com/in/brenool1veira/" },
     github: { handle: "BrenoOl1veira", url: "https://github.com/BrenoOl1veira" },
   },
+  // PDFs ja compilados pela GitHub Action do repositorio resume-kit e
+  // publicados na release "latest" a cada push. O link e direto: nada e
+  // buscado ou compilado no clique, entao o download comeca na hora.
   resume: {
-    repositoryApi: "https://api.github.com/repos/BrenoOl1veira/resume-kit/contents",
-    branch: "codex/resume-kit",
-    locales: {
-      "en-US": { path: "resumes/en/resume.tex", filename: "breno-oliveira-resume-en.pdf" },
-      "pt-BR": { path: "resumes/pt-br/curriculo.tex", filename: "breno-oliveira-curriculo-pt-br.pdf" },
-    },
+    "pt-BR": "https://github.com/BrenoOl1veira/resume-kit/releases/download/latest/breno-oliveira-curriculo-pt-br.pdf",
+    "en-US": "https://github.com/BrenoOl1veira/resume-kit/releases/download/latest/breno-oliveira-resume-en.pdf",
   },
   emailJs: {
     serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID || "",

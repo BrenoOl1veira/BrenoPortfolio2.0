@@ -35,7 +35,7 @@ src/
   hoc/          Wrapper compartilhado que cria as âncoras das seções
   i18n/         Provider de idioma e textos em inglês/português
   services/     Acesso e adaptação de respostas de serviços externos
-  utils/        Utilitário do currículo
+  utils/        Canal de comandos entre o terminal e o mini Claude
 ```
 
 ### Redes sociais
@@ -74,7 +74,7 @@ O arquivo `.env.local` não deve ser versionado. Variáveis `VITE_*` são públi
 
 ### Currículo
 
-O botão de currículo busca o arquivo LaTeX no repositório e branch definidos em `portfolioConfig.resume`, então solicita a compilação do PDF via LatexOnline. Mantenha os caminhos e a branch sincronizados com o repositório de currículos. Se essa dependência externa falhar, a interface informa o erro ao visitante.
+Os botões de currículo são links diretos para PDFs já compilados. A GitHub Action do repositório [resume-kit](https://github.com/BrenoOl1veira/resume-kit) compila os arquivos LaTeX a cada push e publica os PDFs na release `latest`; os endereços ficam em `portfolioConfig.resume`. Para atualizar o currículo, edite o `.tex` no resume-kit: o portfólio passa a baixar a versão nova sem nenhuma mudança aqui.
 
 ## Convenções
 

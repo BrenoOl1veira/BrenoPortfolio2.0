@@ -111,8 +111,6 @@ export const translations = {
       resumeHint: "Choose the language of the generated PDF resume.",
       resumeEn: "English",
       resumePt: "Portuguese",
-      resumePreparing: "Preparing CV...",
-      resumeError: "I couldn't generate the resume PDF right now. Please try again in a moment.",
       imageAlt: "Profile image",
     },
     tech: {
@@ -265,8 +263,6 @@ export const translations = {
       resumeHint: "Escolha o idioma do PDF gerado.",
       resumeEn: "Inglês",
       resumePt: "Português",
-      resumePreparing: "Preparando currículo...",
-      resumeError: "Não consegui gerar o PDF do currículo agora. Tente novamente em instantes.",
       imageAlt: "Imagem de perfil",
     },
     tech: {

@@ -1,34 +1,16 @@
-import { useState } from "react";
 import { SectionWrapper } from "../hoc";
 import { logohero } from "../assets";
 import { useLanguage } from "../i18n/LanguageProvider";
-import { buildResumePdfUrl } from "../utils/resumeDownload";
+import { portfolioConfig } from "../config/portfolio";
 import SectionHeading from "./SectionHeading";
 
 /**
- * Exibe o resumo profissional, a foto e os botoes do curriculo. Para trocar a
+ * Exibe o resumo profissional, a foto e os links do curriculo. Para trocar a
  * foto, use src/assets/index.js; para alterar o texto, use translations.js.
+ * Os PDFs vem prontos do resume-kit (veja portfolioConfig.resume).
  */
 const About = () => {
   const { t } = useLanguage();
-  const [loadingLocale, setLoadingLocale] = useState("");
-  const [resumeError, setResumeError] = useState(false);
-
-  // O PDF vem da fonte LaTeX oficial. Isso evita manter copias diferentes do
-  // curriculo neste repositorio e no repositorio dedicado ao curriculo.
-  const handleResumeDownload = async (locale) => {
-    try {
-      setResumeError(false);
-      setLoadingLocale(locale);
-      const resumeUrl = await buildResumePdfUrl(locale);
-      window.open(resumeUrl, "_blank", "noopener,noreferrer");
-    } catch (error) {
-      console.error(error);
-      setResumeError(true);
-    } finally {
-      setLoadingLocale("");
-    }
-  };
 
   return (
     <>
@@ -57,29 +39,13 @@ const About = () => {
             <p className="m-0 text-[13px] text-muted">{t.about.resumeHint}</p>
 
             <div className="mt-1 flex flex-wrap gap-4">
-              <button
-                type="button"
-                onClick={() => handleResumeDownload("pt-BR")}
-                disabled={loadingLocale !== ""}
-                className="btn-px"
-              >
-                {loadingLocale === "pt-BR" ? t.about.resumePreparing : `${t.about.resume} · ${t.about.resumePt}`}
-              </button>
-              <button
-                type="button"
-                onClick={() => handleResumeDownload("en-US")}
-                disabled={loadingLocale !== ""}
-                className="btn-px btn-ghost"
-              >
-                {loadingLocale === "en-US" ? t.about.resumePreparing : `${t.about.resume} · ${t.about.resumeEn}`}
-              </button>
+              <a href={portfolioConfig.resume["pt-BR"]} className="btn-px">
+                {t.about.resume} · {t.about.resumePt} <span aria-hidden="true">↓</span>
+              </a>
+              <a href={portfolioConfig.resume["en-US"]} className="btn-px btn-ghost">
+                {t.about.resume} · {t.about.resumeEn} <span aria-hidden="true">↓</span>
+              </a>
             </div>
-
-            {resumeError && (
-              <p role="alert" className="m-0 text-[13px] text-accent">
-                {t.about.resumeError}
-              </p>
-            )}
           </div>
         </div>
       </div>
