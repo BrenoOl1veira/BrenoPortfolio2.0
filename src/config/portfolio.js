@@ -11,11 +11,16 @@
  */
 export const portfolioConfig = {
   ownerName: "Breno Oliveira",
-  email: "brenooliveira.dev@gmail.com",
+  email: "brenojuandeoliveirapinto@gmail.com",
   githubUsername: "BrenoOl1veira",
+  // Mesmas redes do hub obrenin.dev. A ordem aqui e a ordem exibida no site e
+  // no comando "links" do terminal; os icones em pixel ficam em constants.
   social: {
-    github: "https://github.com/BrenoOl1veira",
-    linkedin: "https://www.linkedin.com/in/brenool1veira/",
+    tiktok: { handle: "@obrenin.dev", url: "https://www.tiktok.com/@obrenin.dev" },
+    youtube: { handle: "@obrenin_dev", url: "https://www.youtube.com/@obrenin_dev" },
+    instagram: { handle: "@obrenin.dev", url: "https://www.instagram.com/obrenin.dev/" },
+    linkedin: { handle: "in/brenool1veira", url: "https://www.linkedin.com/in/brenool1veira/" },
+    github: { handle: "BrenoOl1veira", url: "https://github.com/BrenoOl1veira" },
   },
   resume: {
     repositoryApi: "https://api.github.com/repos/BrenoOl1veira/resume-kit/contents",

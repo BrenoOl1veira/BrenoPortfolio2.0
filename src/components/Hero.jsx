@@ -1,82 +1,55 @@
-import { FiGithub, FiLinkedin, FiMail } from "react-icons/fi";
 import { styles } from "../styles";
 import { useLanguage } from "../i18n/LanguageProvider";
 import { portfolioConfig } from "../config/portfolio";
+import Critter from "./Critter";
+
+const HIGHLIGHT = { g: "text-accent", o: "text-soft" };
 
 /**
- * Primeira secao visivel do portfolio. Apresenta o profissional e conduz para
- * as duas acoes principais: conhecer projetos ou iniciar um contato.
+ * Primeira secao visivel. Segue o hero do hub: nome grande em pixel, frase com
+ * destaques sublinhados e cursor piscando, botoes e o bichinho no chao.
  */
 const Hero = () => {
   const { t } = useLanguage();
+  const [firstName, ...lastNames] = portfolioConfig.ownerName.split(" ");
 
   return (
-    <section className="relative mx-auto flex min-h-[760px] w-full items-start justify-center pt-[112px] pb-16 sm:min-h-screen sm:items-center sm:pt-[120px]">
-      <div
-        className={`max-w-7xl mx-auto w-full ${styles.paddingX} flex flex-col items-center gap-6 text-center`}
-      >
-        <div className="max-w-3xl rounded-[28px] border border-white/10 bg-[#151030]/85 px-6 py-8 shadow-[0_20px_80px_rgba(0,0,0,0.35)] backdrop-blur-sm sm:px-10">
-          <p className="text-sm uppercase tracking-[0.35em] text-white/60">
-            {t.hero.badge}
-          </p>
+    <div className={`${styles.wrap} flex flex-col gap-[22px] pt-12 sm:pt-20`}>
+      <p className="hint">{"// "}{t.hero.role}</p>
 
-          <h1 className={styles.heroHeadText}>
-            {t.hero.titlePrefix} <span className="text-[#3b82f6]">{portfolioConfig.ownerName}</span>
-          </h1>
+      <h1 className="px-text text-shadow-px m-0 text-[clamp(40px,12vw,96px)] font-bold leading-[0.95] tracking-[0.02em]">
+        {firstName}
+        <br />
+        <span className="text-accent">{lastNames.join(" ")}</span>
+      </h1>
 
-          <p className={`${styles.heroSubText} mt-4 text-white text-center text-lg`}>
-            {t.hero.headline}
-          </p>
+      <p className="px-text m-0 max-w-[640px] text-[clamp(14px,3.9vw,18px)] leading-[1.95]">
+        {t.hero.bio.map(([text, hl], index) =>
+          hl ? (
+            <span key={index} className={`hl ${HIGHLIGHT[hl]}`}>
+              {text}
+            </span>
+          ) : (
+            <span key={index}>{text}</span>
+          )
+        )}
+        <span
+          className="blink-fast ml-1 inline-block h-[1em] w-[0.6em] bg-fg align-[-2px]"
+          aria-hidden="true"
+        />
+      </p>
 
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-secondary sm:text-base">
-            {t.hero.description}
-          </p>
-
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="#works"
-              className="rounded-full bg-[#3b82f6] px-6 py-3 font-semibold text-white transition-transform hover:scale-[1.02] hover:bg-[#2563eb]"
-            >
-              {t.hero.primaryCta}
-            </a>
-            <a
-              href="#contact"
-              className="rounded-full border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:border-white/50 hover:bg-white/5"
-            >
-              {t.hero.secondaryCta}
-            </a>
-          </div>
-
-          <div className="mt-6 flex justify-center gap-5 text-2xl text-white">
-            <a
-              href={portfolioConfig.social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.hero.linkedinLabel}
-              className="transition-colors hover:text-[#0A66C2]"
-            >
-              <FiLinkedin />
-            </a>
-            <a
-              href={portfolioConfig.social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={t.hero.githubLabel}
-              className="transition-colors hover:text-gray-400"
-            >
-              <FiGithub />
-            </a>
-            <a
-              href={`mailto:${portfolioConfig.email}`}
-              aria-label={t.hero.emailLabel}
-              className="transition-colors hover:text-[#60a5fa]"
-            >
-              <FiMail />
-            </a>
-          </div>
-        </div>
+      <div className="flex flex-wrap gap-4">
+        <a href="#works" className="btn-px">
+          {t.hero.primaryCta} <span aria-hidden="true">↓</span>
+        </a>
+        <a href="#contact" className="btn-px btn-ghost">
+          {t.hero.secondaryCta}
+        </a>
       </div>
-    </section>
+
+      <Critter copy={t.hero.critter} />
+    </div>
   );
 };
 

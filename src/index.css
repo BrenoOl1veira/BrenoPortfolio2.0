@@ -1,212 +1,219 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Base global. Para estilo de uma parte especifica, prefira classes Tailwind no
-   componente correspondente em vez de adicionar regra global aqui. */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  scroll-behavior: smooth;
+/* Visual herdado do hub obrenin.dev. Os tokens abaixo sao os mesmos do
+   tailwind.config.js; o canvas do bichinho le --accent, --accent-dark e --eye. */
+:root {
+  --bg: #141413;
+  --dot: #23221f;
+  --fg: #faf9f5;
+  --muted: #b0aea5;
+  --line: #33312c;
+  --panel: #1b1a18;
+  --accent: #d97757;
+  --accent-dark: #b85f3f;
+  --soft: #e39a7a;
+  --eye: #1a1412;
+  --bug: #8fbf6a;
   color-scheme: dark;
 }
 
-/* Compensa a altura da barra fixa quando um link leva diretamente a uma secao. */
-.hash-span {
-  margin-top: -100px;
-  padding-bottom: 100px;
-  display: block;
-}
-
-.black-gradient {
-  background: #000000; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #434343,
-    #000000
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #434343,
-    #000000
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-}
-
-.violet-gradient {
-  background: #804dee;
-  background: linear-gradient(-90deg, #804dee 0%, rgba(60, 51, 80, 0) 100%);
-  background: -webkit-linear-gradient(
-    -90deg,
-    #804dee 0%,
-    rgba(60, 51, 80, 0) 100%
-  );
-}
-
-.green-pink-gradient {
-  background: "#00cea8";
-  background: linear-gradient(90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
-  background: -webkit-linear-gradient(-90.13deg, #00cea8 1.9%, #bf61ff 97.5%);
-}
-
-.orange-text-gradient {
-  background: #f12711; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #f12711,
-    #f5af19
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #f12711,
-    #f5af19
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.green-text-gradient {
-  background: #11998e; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #11998e,
-    #38ef7d
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #11998e,
-    #38ef7d
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.blue-text-gradient {
-  /* background: -webkit-linear-gradient(#eee, #333); */
-  background: #56ccf2; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #2f80ed,
-    #56ccf2
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #2f80ed,
-    #56ccf2
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.pink-text-gradient {
-  background: #ec008c; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to top,
-    #ec008c,
-    #fc6767
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to top,
-    #ec008c,
-    #fc6767
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* canvas- styles */
-.canvas-loader {
-  font-size: 10px;
-  width: 1em;
-  height: 1em;
-  border-radius: 50%;
-  position: relative;
-  text-indent: -9999em;
-  animation: mulShdSpin 1.1s infinite ease;
-  transform: translateZ(0);
-}
-
-@keyframes mulShdSpin {
-  0%,
-  100% {
-    box-shadow: 0em -2.6em 0em 0em #ffffff,
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.5),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7);
+@layer base {
+  html {
+    scroll-behavior: smooth;
   }
-  12.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.7),
-      1.8em -1.8em 0 0em #ffffff, 2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5);
+
+  body {
+    background-color: var(--bg);
+    background-image: radial-gradient(var(--dot) 1px, transparent 1.4px);
+    background-size: 22px 22px;
+    color: var(--fg);
+    @apply font-mono text-[15px] leading-7;
   }
-  25% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.5),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.7), 2.5em 0em 0 0em #ffffff,
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+
+  /* Cursores em pixel (public/cursors). O segundo valor de cada um e o ponto
+     de clique; o cursor nativo fica como reserva se o SVG nao carregar. */
+  html {
+    cursor: url("/cursors/arrow.svg") 1 1, auto;
   }
-  37.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.5),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.7), 1.75em 1.75em 0 0em #ffffff,
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
+  a,
+  button,
+  summary,
+  label[for],
+  [role="group"] button,
+  .critter-canvas {
+    cursor: url("/cursors/pointer.svg") 9 1, pointer;
   }
+  input,
+  textarea,
+  .term-out {
+    cursor: url("/cursors/text.svg") 7 16, text;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    outline: 2px dashed var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+@layer components {
+  /* Texto em pixel: sempre caixa alta e sem suavizacao, como no hub. */
+  .px-text {
+    @apply font-px uppercase tracking-[0.06em];
+    -webkit-font-smoothing: none;
+  }
+
+  .h-section {
+    @apply px-text m-0 text-[22px] font-normal tracking-[0.1em] sm:text-[28px];
+    text-shadow: 3px 3px 0 var(--line);
+  }
+
+  .hint {
+    @apply px-text m-0 text-[12px] text-muted;
+  }
+
+  /* Destaques sublinhados do texto de apresentacao. */
+  .hl {
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 1px;
+  }
+
+  /* Botao principal: bloco laranja com sombra que "sobe" no hover. */
+  .btn-px {
+    @apply px-text inline-flex items-center gap-2 bg-accent px-[18px] py-3 text-[13px] tracking-[0.1em] text-bg no-underline shadow-px;
+    transition: transform 0.12s steps(2), box-shadow 0.12s steps(2);
+  }
+  .btn-px:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--line);
+  }
+  .btn-px:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+  .btn-px:disabled {
+    @apply cursor-not-allowed opacity-60;
+    transform: none;
+  }
+
+  /* Variante vazada; use junto com .btn-px: className="btn-px btn-ghost". */
+  .btn-ghost {
+    @apply border-2 border-line bg-transparent py-[10px] text-fg;
+  }
+  .btn-ghost:hover {
+    @apply border-fg;
+  }
+
+  /* Painel com borda grossa e sombra deslocada (terminal, cards, formulario). */
+  .panel {
+    @apply border-2 border-line bg-panel shadow-px-lg;
+  }
+
+  .panel-bar {
+    @apply px-text flex items-center gap-[6px] border-b-2 border-line px-3 py-[10px] text-[12px] text-muted;
+  }
+  .panel-bar > span {
+    @apply h-2 w-2 bg-line;
+  }
+  .panel-bar > span:first-child {
+    @apply bg-accent;
+  }
+  .panel-bar > b {
+    @apply ml-2 overflow-hidden text-ellipsis whitespace-nowrap font-normal;
+  }
+
+  /* Linha clicavel que vira bloco laranja no hover (links sociais e projetos). */
+  .row-link {
+    @apply grid items-center gap-4 border-b-2 border-line px-3 py-4 text-fg no-underline;
+    grid-template-columns: 30px minmax(0, 1fr) auto;
+    transition: background-color 0.12s steps(2), color 0.12s steps(2), transform 0.12s steps(2);
+  }
+  .row-link .go {
+    @apply text-[18px];
+    transition: transform 0.12s steps(2);
+  }
+  .row-link:hover,
+  .row-link:focus-visible {
+    @apply bg-accent text-bg shadow-px;
+    transform: translate(-2px, -2px);
+    outline: none;
+  }
+  .row-link:hover .muted-on-row,
+  .row-link:focus-visible .muted-on-row {
+    @apply text-bg;
+  }
+  .row-link:hover .go,
+  .row-link:focus-visible .go {
+    transform: translate(3px, -3px);
+  }
+  .row-link:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+
+  /* Chao tracejado por onde o bichinho anda. */
+  .stage-floor::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, var(--fg) 0 34px, transparent 34px 38px);
+    opacity: 0.85;
+  }
+
+  .field {
+    @apply w-full border-2 border-line bg-bg px-4 py-3 font-mono text-[14px] text-fg outline-none placeholder:text-[#6b6962];
+    caret-color: var(--accent);
+  }
+  .field:focus {
+    @apply border-accent;
+  }
+}
+
+@layer utilities {
+  .blink {
+    animation: blink 1.6s steps(2, jump-none) infinite;
+  }
+  .blink-fast {
+    animation: blink 1s steps(2, jump-none) infinite;
+  }
+  .text-shadow-px {
+    text-shadow: 6px 6px 0 var(--line);
+  }
+  .pixelated {
+    image-rendering: pixelated;
+  }
+}
+
+@keyframes blink {
   50% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.5),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.7), 0em 2.5em 0 0em #ffffff,
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.2),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-  }
-  62.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.5),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.7), -1.8em 1.8em 0 0em #ffffff,
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-  }
-  75% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.5),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.7), -2.6em 0em 0 0em #ffffff,
-      -1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2);
-  }
-  87.5% {
-    box-shadow: 0em -2.6em 0em 0em rgba(255, 255, 255, 0.2),
-      1.8em -1.8em 0 0em rgba(255, 255, 255, 0.2),
-      2.5em 0em 0 0em rgba(255, 255, 255, 0.2),
-      1.75em 1.75em 0 0em rgba(255, 255, 255, 0.2),
-      0em 2.5em 0 0em rgba(255, 255, 255, 0.2),
-      -1.8em 1.8em 0 0em rgba(255, 255, 255, 0.5),
-      -2.6em 0em 0 0em rgba(255, 255, 255, 0.7), -1.8em -1.8em 0 0em #ffffff;
+    opacity: 0;
   }
 }
 
-.red-blue-gradient {
-  background: linear-gradient(to top, #FF0000, #0000FF);
-  /* Outros estilos, como largura (width), padding (p), bordas arredondadas (rounded), e sombra (shadow), podem ser adicionados conforme necessário. */
+/* O bichinho continua andando (usa setInterval), o resto fica parado. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  html {
+    scroll-behavior: auto;
+  }
 }

@@ -6,23 +6,34 @@ const LanguageContext = createContext(null);
 
 /**
  * Escolhe o idioma inicial. Primeiro respeita a escolha salva no navegador;
- * se nao houver escolha, usa portugues para navegador configurado em pt-BR e
- * ingles como alternativa. Esta regra pode ser alterada sem mexer nas telas.
+ * se nao houver escolha, usa portugues para qualquer navegador em portugues
+ * (pt, pt-BR, pt-PT) e ingles como alternativa. Esta regra pode ser alterada
+ * sem mexer nas telas.
  */
 const getInitialLocale = () => {
   if (typeof window === "undefined") return defaultLocale;
 
-  const savedLocale = window.localStorage.getItem(STORAGE_KEY);
-  if (savedLocale && translations[savedLocale]) return savedLocale;
+  // localStorage pode lancar erro em aba anonima ou com cookies bloqueados;
+  // nesse caso o site segue funcionando, so nao lembra a escolha.
+  try {
+    const savedLocale = window.localStorage.getItem(STORAGE_KEY);
+    if (savedLocale && translations[savedLocale]) return savedLocale;
+  } catch {
+    // ignora e usa o idioma do navegador
+  }
 
-  return navigator.language === "pt-BR" ? "pt-BR" : defaultLocale;
+  return navigator.language?.toLowerCase().startsWith("pt") ? "pt-BR" : defaultLocale;
 };
 
 export const LanguageProvider = ({ children }) => {
   const [locale, setLocale] = useState(getInitialLocale);
 
   useEffect(() => {
-    window.localStorage.setItem(STORAGE_KEY, locale);
+    try {
+      window.localStorage.setItem(STORAGE_KEY, locale);
+    } catch {
+      // sem armazenamento disponivel; a escolha vale so para esta visita
+    }
     document.documentElement.lang = locale;
   }, [locale]);
 
